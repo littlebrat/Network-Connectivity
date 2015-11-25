@@ -29,6 +29,7 @@ namespace Network {
 
 		inline ID getId() const { return id; }
 		inline ID getPosition() const { return polarity == Negative ? id : (ID) (id + 1); }
+		inline const Polarity& getPolarity() const { return polarity; }
 
 		inline void addLink(Node* destNode, Link::Flow maxFlow) {
 			outLinks.push_back(Link(destNode, maxFlow));

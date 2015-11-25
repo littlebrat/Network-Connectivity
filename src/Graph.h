@@ -22,11 +22,19 @@ namespace Network {
 		Graph();
 		Graph(std::string filename);
 
-		void addLink(Node::ID srcNode, Node::ID destNode);
+		void addEdge(Node::ID srcNode, Node::ID destNode);
 
 	private:
 		NodeHolder nodes;     // stores all the nodes in the graph
 
+		const static Link::Flow DEFAULT_FLOW = 1;
+
+		inline NodePtr& negNode(Node::ID id) { return nodes[id]; }
+		inline NodePtr& posNode(Node::ID id) { return nodes[id + 1]; }
+		inline NodePtr& invNode(Node::ID position) {
+			return nodes[position]->getPolarity() == Node::Polarity::Negative ?
+			       nodes[position + 1] : nodes[position - 1];
+		}
 	};
 
 }
