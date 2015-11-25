@@ -46,7 +46,8 @@ namespace Network {
 
 		typedef std::unique_ptr<Node> NodePtr;
 		typedef std::array<NodePtr, Node::MAX_ID + 1> NodeList;
-		typedef std::array<Link, Node::MAX_ID + 1> LinkList;
+		typedef std::unique_ptr<Link> LinkPtr;
+		typedef std::array<LinkPtr, Node::MAX_ID + 1> LinkList;
 
 		Graph();
 		Graph(std::string filename);
