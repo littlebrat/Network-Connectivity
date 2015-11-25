@@ -11,9 +11,9 @@ namespace Network {
 
 	public:
 		// flows can only have 3 values 0, 1 and 2
-		typedef uint8_t Flow;
+		typedef uint16_t Flow;
 
-		Link(Node* destNode, Flow maxFlow) : destNode(destNode), maxFlow(maxFlow) {}
+		Link(Node* destNode, Flow maxFlow) : destNode(destNode), maxFlow(maxFlow) { }
 
 
 		inline Node* getDestNode() const {
@@ -35,8 +35,9 @@ namespace Network {
 	private:
 		Node* destNode;  // destination node of the link
 		Flow maxFlow;   // maximum flow that can go through this link
-
 	};
+
+	std::ostream& operator<<(std::ostream& out, const Link& link);
 
 }
 

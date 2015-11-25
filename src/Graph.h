@@ -24,12 +24,26 @@ namespace Network {
 
 		void addEdge(Node::ID srcNode, Node::ID destNode);
 
-		void print();
-
 	private:
 		NodeHolder nodes;     // stores all the nodes in the graph
 
 		const static Link::Flow DEFAULT_FLOW = 1;
+
+		friend std::ostream& operator<<(std::ostream& out, const Graph& graph) {
+			using namespace std;
+
+			out << "Graph" << endl;
+			for(auto& node : graph.nodes) {
+				out << *node << "[ ";
+
+				for(auto& link : node->getLinks()) {
+					out << link << " ";
+				}
+				out << "]" << endl;
+			}
+
+			return out;
+		}
 
 		inline NodePtr& negNode(Node::ID id) { return nodes[2 * id]; }
 		inline NodePtr& posNode(Node::ID id) { return nodes[2 * id + 1]; }
