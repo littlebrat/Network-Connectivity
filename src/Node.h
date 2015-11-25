@@ -13,6 +13,8 @@ namespace Network {
 		typedef uint8_t ID;
 		const static ID MAX_ID = 99;  // nodes have ids between 0-99
 
+		enum Polarity { Negative, Positive };
+
 		/*
 		 * An IDException is thrown when an attempt to create a node with an ID value higher than the MAX_ID
 		 */
@@ -23,17 +25,19 @@ namespace Network {
 		};
 
 		inline ID getId() const { return id; }
+		inline ID getPosition() const { return polarity == Negative ? id : (ID) (id + 1); }
 
 	private:
 
 		// a node can only be created by the graph class
-		Node(ID id) : id(id) {
+		Node(ID id, Polarity polarity) : id(id), polarity(polarity) {
 			if(id > MAX_ID) {
 				throw IDException();
 			}
 		}
 
-		ID id;  // id of the node
+		ID id;              // id of the node
+		Polarity polarity;  // polarity of this node
 
 	};
 
