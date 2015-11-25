@@ -4,52 +4,62 @@
 #include <cstdint>
 #include <vector>
 #include <string>
+#include <memory>
 
-class Graph {
+#include "Node.h"
 
-public:
+namespace Network {
 
-    typedef uint8_t Node;               // nodes can only have ids from 0 to 100
-    typedef uint8_t Flow;               // assumes flows can't be bigger than 255
-    typedef std::vector<Link> LinkList;
+	class Graph {
 
-    class Link {
+	public:
 
-    public:
-        Link(Node destNode, Flow maxFlow) : destNode(destNode), maxFlow(maxFlow) {}
+		class Link {
+
+		public:
+			typedef uint8_t Flow;
+
+			Link(Node* destNode, Flow maxFlow) : destNode(destNode), maxFlow(maxFlow) {}
 
 
-        Node getDestNode() const {
-            return destNode;
-        }
+			inline Node *getDestNode() const {
+				return destNode;
+			}
 
-        void setDestNode(Node destNode) {
-            Link::destNode = destNode;
-        }
+			inline void setDestNode(Node *destNode) {
+				Link::destNode = destNode;
+			}
 
-        Flow getMaxFlow() const {
-            return maxFlow;
-        }
+			inline Flow getMaxFlow() const {
+				return maxFlow;
+			}
 
-        void setMaxFlow(Flow maxFlow) {
-            Link::maxFlow = maxFlow;
-        }
+			inline void setMaxFlow(Flow maxFlow) {
+				Link::maxFlow = maxFlow;
+			}
 
-    private:
-        Node destNode;  // destination node of the link
-        Flow maxFlow;   // maximum flow that can go through this link
+		private:
+			Node* destNode;  // destination node of the link
+			Flow maxFlow;   // maximum flow that can go through this link
 
-    };
+		};
 
-	Graph();
-	Graph(std::string filename);
+		typedef std::unique_ptr<Node> NodePtr;
+		typedef std::array<NodePtr, Node::MAX_ID + 1> NodeList;
+		typedef std::array<Link, Node::MAX_ID + 1> LinkList;
 
-	void addLink(Node srcNode, Node destNode);
+		Graph();
+		Graph(std::string filename);
 
-private:
-    LinkList links;
+		void addLink(Node::ID srcNode, Node::ID destNode);
 
-};
+	private:
+		NodeList nodes;     // stores all the nodes in the graph
+		LinkList links;     // stores all the links in the graph
+
+	};
+
+}
 
 
 #endif //GRAPH_H
