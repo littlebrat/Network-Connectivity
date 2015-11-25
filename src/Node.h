@@ -2,6 +2,8 @@
 #define NODE_H
 
 #include <cstdint>
+#include <vector>
+#include "Link.h"
 
 namespace Network {
 
@@ -12,6 +14,7 @@ namespace Network {
 	public:
 		typedef uint8_t ID;
 		const static ID MAX_ID = 99;  // nodes have ids between 0-99
+		typedef std::vector<Link> LinkList;
 
 		enum Polarity { Negative, Positive };
 
@@ -27,6 +30,12 @@ namespace Network {
 		inline ID getId() const { return id; }
 		inline ID getPosition() const { return polarity == Negative ? id : (ID) (id + 1); }
 
+		inline void addLink(Node* destNode, Link::Flow maxFlow) {
+			outLinks.push_back(Link(destNode, maxFlow));
+		}
+
+		inline const LinkList& getLinks() const { return outLinks; }
+
 	private:
 
 		// a node can only be created by the graph class
@@ -38,6 +47,7 @@ namespace Network {
 
 		ID id;              // id of the node
 		Polarity polarity;  // polarity of this node
+		LinkList outLinks;  // out links for this node in the graph
 
 	};
 

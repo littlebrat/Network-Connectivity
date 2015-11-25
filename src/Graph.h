@@ -17,9 +17,7 @@ namespace Network {
 
 		typedef std::unique_ptr<Node> NodePtr;
 		// a node list stores all nodes with Negative and Positive polarity
-		typedef std::array<NodePtr, (2 * Node::MAX_ID + 1)> NodeList;
-		typedef std::unique_ptr<Link> LinkPtr;
-		typedef std::array<LinkPtr, (2 * Node::MAX_ID + 1)> LinkList;
+		typedef std::array<NodePtr, (2 * Node::MAX_ID + 1)> NodeHolder;
 
 		Graph();
 		Graph(std::string filename);
@@ -27,8 +25,7 @@ namespace Network {
 		void addLink(Node::ID srcNode, Node::ID destNode);
 
 	private:
-		NodeList nodes;     // stores all the nodes in the graph
-		LinkList links;     // stores all the links in the graph
+		NodeHolder nodes;     // stores all the nodes in the graph
 
 	};
 
