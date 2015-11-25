@@ -49,6 +49,11 @@ namespace Network {
 
 	};
 
+	/*
+	 * Allows that Node objects can be printed in the same form as other types.
+	 * (e.g. std::cout << node << std::endl)
+	 * Nodes are printed with only its id and polarity, the links are not printed.
+	 */
 	inline std::ostream& operator<<(std::ostream& out, const Node& node) {
 		char polarity = node.getPolarity() == Node::Polarity::Negative ? '-' : '+';
 		out << "Node(" << node.getId() << ", " << polarity << ")";

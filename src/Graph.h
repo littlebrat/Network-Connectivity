@@ -27,8 +27,14 @@ namespace Network {
 	private:
 		NodeHolder nodes;     // stores all the nodes in the graph
 
+		// defines the default flow of the links in the graph
 		const static Link::Flow DEFAULT_FLOW = 1;
 
+		/*
+		 * Allows that Graph objects can be printed in the same form as other types.
+		 * (e.g. std::cout << graph << std::endl)
+		 * It must be a friend method because it needs to access private members
+		 */
 		friend std::ostream& operator<<(std::ostream& out, const Graph& graph) {
 			using namespace std;
 
@@ -45,6 +51,11 @@ namespace Network {
 			return out;
 		}
 
+		/*
+		 * These methods should be used to access the negative and positive nodes of a specific super node.
+		 * They receive the super node id and return the node in the graph negative or positive according
+		 * to the called method.
+		 */
 		inline NodePtr& negNode(Node::ID id) { return nodes[2 * id]; }
 		inline NodePtr& posNode(Node::ID id) { return nodes[2 * id + 1]; }
 	};
