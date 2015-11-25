@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <vector>
+#include <ostream>
 #include "Link.h"
 
 namespace Network {
@@ -15,7 +16,6 @@ namespace Network {
 		typedef uint16_t ID;
 		const static ID MAX_ID = 99;  // nodes have ids between 0-99
 		typedef std::vector<Link> LinkList;
-
 		enum Polarity { Negative, Positive };
 
 		/*
@@ -27,13 +27,11 @@ namespace Network {
 			}
 		};
 
+		/// public methods ///
+
 		inline ID getId() const { return id; }
 		inline const Polarity& getPolarity() const { return polarity; }
-
-		inline void addLink(Node* destNode, Link::Flow maxFlow) {
-			outLinks.push_back(Link(destNode, maxFlow));
-		}
-
+		inline void addLink(Node* destNode, Link::Flow maxFlow) { outLinks.push_back(Link(destNode, maxFlow)); }
 		inline const LinkList& getLinks() const { return outLinks; }
 
 	private:
@@ -50,6 +48,12 @@ namespace Network {
 		LinkList outLinks;  // out links for this node in the graph
 
 	};
+
+	inline std::ostream& operator<<(std::ostream& out, const Node& node) {
+		char polarity = node.getPolarity() == Node::Polarity::Negative ? '-' : '+';
+		out << "Node(" << node.getId() << ", " << polarity << ")";
+		return out;
+	}
 
 }
 
