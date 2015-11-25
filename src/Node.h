@@ -12,7 +12,7 @@ namespace Network {
 		friend class Graph;
 
 	public:
-		typedef uint8_t ID;
+		typedef uint16_t ID;
 		const static ID MAX_ID = 99;  // nodes have ids between 0-99
 		typedef std::vector<Link> LinkList;
 
@@ -28,7 +28,6 @@ namespace Network {
 		};
 
 		inline ID getId() const { return id; }
-		inline ID getPosition() const { return polarity == Negative ? id : (ID) (id + 1); }
 		inline const Polarity& getPolarity() const { return polarity; }
 
 		inline void addLink(Node* destNode, Link::Flow maxFlow) {
