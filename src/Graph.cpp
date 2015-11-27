@@ -30,6 +30,8 @@ void Network::Graph::addEdge(Network::Node::ID node1, Network::Node::ID node2) {
 
 		// add link between the nodes of the supernode
 		negNode(node1)->addLink(posNode(node1).get(), DEFAULT_FLOW);
+
+		nodeCount += 2;
 	}
 
 	if(negNode(node2) == nullptr) {
@@ -40,6 +42,8 @@ void Network::Graph::addEdge(Network::Node::ID node1, Network::Node::ID node2) {
 
 		// add link between the nodes of the supernode
 		negNode(node2)->addLink(posNode(node2).get(), DEFAULT_FLOW);
+
+		nodeCount += 2;
 	}
 
 	// add an edge between the two supernodes
@@ -53,7 +57,7 @@ void Network::Graph::addEdge(Network::Node::ID node1, Network::Node::ID node2) {
  * node. To build this bath it implements a Breath First Search algorithm. Which means that it
  * will return the path with the least links between the source and destination node.
  */
-bool Network::Graph::getPath(Network::Node::ID srcNode, Network::Node::ID destNode, Network::Node* parents[]) {
+bool Network::Graph::getPath(Node::ID srcNode, Node::ID destNode, std::vector<Node*>& parents) {
 
 	/**
 	 * The search is made from the positive source node to the negative destination node.
