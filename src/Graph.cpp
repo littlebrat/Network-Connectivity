@@ -67,6 +67,8 @@ bool Network::Graph::getPath(Node::ID srcNode, Node::ID destNode, std::vector<No
 	std::queue<Node*> fringe;
 	// visited nodes all initialized with False.
 	std::vector<bool> visited(nodes.size(), false);
+	visited[index(negNode(srcNode).get())] = true;
+	visited[index(posNode(destNode).get())] = true;
 
 	// push outward node from the starting node to the queue.
 	fringe.push(posNode(srcNode).get());
@@ -75,6 +77,7 @@ bool Network::Graph::getPath(Node::ID srcNode, Node::ID destNode, std::vector<No
 
 		Node* u = fringe.front();
 		fringe.pop();
+		visited[index(u)] = true;
 
 		if(u == negNode(destNode).get()) {
 			found = true;
