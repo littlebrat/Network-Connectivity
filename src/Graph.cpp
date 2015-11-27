@@ -48,4 +48,45 @@ void Network::Graph::addEdge(Network::Node::ID node1, Network::Node::ID node2) {
 
 }
 
+Network::Node* Network::Graph::search_bfs(Network::Node::ID start_node, Network::Node::ID goal_node)
+{
+	// Initialize the fringe with a Queue data structure.
+	std::queue<Node> fringe;
+
+	// Parents of all the nodes in the graph.
+	Node parent[size] = { NULL };
+
+	// Visited nodes all initialized with False.
+	int visited[size] = {};
+
+	// Push outward node from the starting node to the queue.
+	fringe.push(*posNode(start_node));
+
+	while(!fringe.empty())
+	{
+		// Take out first node of the queue.
+		Node u = fringe.front();
+		fringe.pop();
+
+		// Check if it is the goal node.
+		if(u.id == goal_node && u.polarity == Node::Polarity::Negative)
+		{
+			return parent;
+		}
+
+		// Add successors of u to the queue, if they have not been visited yet.
+		for(auto& uv : u.getLinks())
+		{
+			Node v = *uv.getDestNode();
+
+			// Check if we have visited node v. THIS IS WRONG!!!!!!
+			if(visited[v.id] == 0)
+			{
+				fringe.push(v);
+			}
+		}
+	}
+	return NULL;
+}
+
 

@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include <queue>
 
 #include "Node.h"
 #include "Link.h"
@@ -23,10 +24,11 @@ namespace Network {
 		Graph(std::string filename);
 
 		void addEdge(Node::ID srcNode, Node::ID destNode);
+		Node* search_bfs(Node::ID start_node,Node::ID goal_node);
 
 	private:
 		NodeHolder nodes;     // stores all the nodes in the graph
-
+		int size; // number of nodes in the graph
 		// defines the default flow of the links in the graph
 		const static Link::Flow DEFAULT_FLOW = 1;
 
