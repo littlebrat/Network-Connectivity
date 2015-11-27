@@ -48,45 +48,48 @@ void Network::Graph::addEdge(Network::Node::ID node1, Network::Node::ID node2) {
 
 }
 
-Network::Node* Network::Graph::search_bfs(Network::Node::ID start_node, Network::Node::ID goal_node)
-{
-	// Initialize the fringe with a Queue data structure.
-	std::queue<Node> fringe;
+/**
+ * Returns a sequence of nodes that constitute a path from the source node to the destination
+ * node. To build this bath it implements a Breath First Search algorithm. Which means that it
+ * will return the path with the least links between the source and destination node.
+ */
+bool Network::Graph::getPath(Network::Node::ID srcNode, Network::Node::ID destNode, Network::Node* parents[]) {
 
-	// Parents of all the nodes in the graph.
-	Node parent[size] = { NULL };
+	/**
+	 * The search is made from the positive source node to the negative destination node.
+	 */
+	bool found = false;
 
-	// Visited nodes all initialized with False.
-	int visited[size] = {};
+	std::queue<Node*> fringe;
+	// visited nodes all initialized with False.
+	std::unique_ptr<bool[]> visited(new bool[nodes.size()]);
+	visited = { false };
 
-	// Push outward node from the starting node to the queue.
-	fringe.push(*posNode(start_node));
+	// push outward node from the starting node to the queue.
+	fringe.push(posNode(srcNode).get());
 
-	while(!fringe.empty())
-	{
-		// Take out first node of the queue.
-		Node u = fringe.front();
+	while(!fringe.empty()) {
+
+		Node* u = fringe.front();
 		fringe.pop();
 
-		// Check if it is the goal node.
-		if(u.id == goal_node && u.polarity == Node::Polarity::Negative)
-		{
-			return parent;
+		if(u == negNode(destNode).get()) {
+			found = true;
+			break;
 		}
 
 		// Add successors of u to the queue, if they have not been visited yet.
-		for(auto& uv : u.getLinks())
-		{
-			Node v = *uv.getDestNode();
+		for(auto& link : u->getLinks()) {
 
-			// Check if we have visited node v. THIS IS WRONG!!!!!!
-			if(visited[v.id] == 0)
-			{
+			Node* v = link.getDestNode();
+
+			if(!visited[index(v)]) {
 				fringe.push(v);
+				parents[index(v)] = u;
 			}
 		}
 	}
-	return NULL;
-}
 
+	return found;
+}
 

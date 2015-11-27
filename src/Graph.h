@@ -24,11 +24,10 @@ namespace Network {
 		Graph(std::string filename);
 
 		void addEdge(Node::ID srcNode, Node::ID destNode);
-		Node* search_bfs(Node::ID start_node,Node::ID goal_node);
 
 	private:
 		NodeHolder nodes;     // stores all the nodes in the graph
-		int size; // number of nodes in the graph
+
 		// defines the default flow of the links in the graph
 		const static Link::Flow DEFAULT_FLOW = 1;
 
@@ -60,6 +59,11 @@ namespace Network {
 		 */
 		inline NodePtr& negNode(Node::ID id) { return nodes[2 * id]; }
 		inline NodePtr& posNode(Node::ID id) { return nodes[2 * id + 1]; }
+		inline Node::ID index(Node* node) {
+			return (Node::ID) (node->polarity == Node::Polarity::Negative ? 2 * node->id : 2 * node->id + 1);
+		}
+
+		bool getPath(Node::ID start_node, Node::ID goal_node, Node* parents[]);
 	};
 
 }
