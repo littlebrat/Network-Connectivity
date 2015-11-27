@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include <queue>
 
 #include "Node.h"
 #include "Link.h"
@@ -17,15 +18,17 @@ namespace Network {
 
 		typedef std::unique_ptr<Node> NodePtr;
 		// a node list stores all nodes with Negative and Positive polarity
-		typedef std::array<NodePtr, (2 * Node::MAX_ID + 1)> NodeHolder;
+		typedef std::array<NodePtr, 2 * (Node::MAX_ID + 1)> NodeHolder;
 
 		Graph();
 		Graph(std::string filename);
 
 		void addEdge(Node::ID srcNode, Node::ID destNode);
+		inline size_t size() const { return nodeCount / 2; }
 
 	private:
-		NodeHolder nodes;     // stores all the nodes in the graph
+		NodeHolder nodes;   // stores all the nodes in the graph
+		size_t nodeCount;   // number of actual node in the graph (its the number of nodes and ot super nodes
 
 		// defines the default flow of the links in the graph
 		const static Link::Flow DEFAULT_FLOW = 1;
@@ -40,12 +43,14 @@ namespace Network {
 
 			out << "Graph" << endl;
 			for(auto& node : graph.nodes) {
-				out << *node << "[ ";
+				if(node != nullptr) {
+					out << *node << "[ ";
 
-				for(auto& link : node->getLinks()) {
-					out << link << " ";
+					for (auto& link : node->getLinks()) {
+						out << link << " ";
+					}
+					out << "]" << endl;
 				}
-				out << "]" << endl;
 			}
 
 			return out;
@@ -58,6 +63,11 @@ namespace Network {
 		 */
 		inline NodePtr& negNode(Node::ID id) { return nodes[2 * id]; }
 		inline NodePtr& posNode(Node::ID id) { return nodes[2 * id + 1]; }
+		inline Node::ID index(Node* node) {
+			return (Node::ID) (node->polarity == Node::Polarity::Negative ? 2 * node->id : 2 * node->id + 1);
+		}
+
+		bool getPath(Node::ID start_node, Node::ID goal_node, std::vector<Node*>& parents);
 	};
 
 }
