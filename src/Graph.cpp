@@ -36,6 +36,20 @@ void Network::Graph::addEdge(Network::Node::ID node1, Network::Node::ID node2) {
 
 }
 
+unsigned Network::Graph::getConnectivity(Network::Node::ID srcNode, Network::Node::ID destNode) {
+
+	Link::Flow maxFlow = 0;
+	Path path(*this, posNode(srcNode).get(), negNode(destNode).get());
+
+	while(getPath(srcNode, destNode, path)) {
+		Link::Flow pathMaxFlow = path.getMaxFlow();
+		path.adjustFlows(pathMaxFlow);
+		maxFlow += pathMaxFlow;
+	}
+
+	return maxFlow;
+}
+
 /**
  * Returns a sequence of nodes that constitute a path from the source node to the destination
  * node. To build this bath it implements a Breath First Search algorithm. Which means that it

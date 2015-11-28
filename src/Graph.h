@@ -33,6 +33,8 @@ namespace Network {
 		void addEdge(Node::ID srcNode, Node::ID destNode);
 		inline size_t size() const { return nodeCount / 2; }
 
+		unsigned int getConnectivity(Node::ID srcNode, Node::ID destNode);
+
 	private:
 		NodeHolder nodes;   // stores all the nodes in the graph
 		size_t nodeCount;   // number of actual node in the graph (its the number of nodes and ot super nodes
