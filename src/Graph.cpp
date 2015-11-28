@@ -27,7 +27,7 @@ void Network::Graph::addEdge(Network::Node::ID node1, Network::Node::ID node2) {
 	}
 
 	if(negNode(node2) == nullptr) {
-		createSupernode(node1);
+		createSupernode(node2);
 	}
 
 	// add an edge between the two supernodes with flow = 1
