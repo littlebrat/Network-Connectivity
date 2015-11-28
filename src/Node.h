@@ -48,13 +48,19 @@ namespace Network {
 		inline ID getId() const {
 			return id;
 		}
-		
+
 		inline const Polarity& getPolarity() const {
 			return polarity;
 		}
 
 		inline void addOutLink(Node* destNode, Link::Flow maxFlow) {
 			outLinks.push_back(Link(destNode, maxFlow));
+		}
+
+		Link* getOutLink(Node* destNode);
+
+		inline Link* getInLink(Node* srcNode) {
+			return srcNode->getOutLink(this);
 		}
 
 		inline const LinkList& getLinks() const {
