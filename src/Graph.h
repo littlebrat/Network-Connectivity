@@ -70,7 +70,7 @@ namespace Network {
 		inline NodePtr& negNode(Node::ID id) { return nodes[2 * id]; }
 		inline NodePtr& posNode(Node::ID id) { return nodes[2 * id + 1]; }
 
-		bool getPath(Node::ID start_node, Node::ID goal_node, std::vector<Node*>& parents);
+		bool getPath(Node::ID srcNode, Node::ID destNode, Path& path);
 	};
 
 	inline Graph::Index index(const Node* node) {

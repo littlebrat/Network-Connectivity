@@ -1,4 +1,5 @@
 #include "Graph.h"
+#include "Path.h"
 
 Network::Graph::Graph() : nodeCount(0) {
 	// ensure that all positions store an empty node
@@ -40,7 +41,7 @@ void Network::Graph::addEdge(Network::Node::ID node1, Network::Node::ID node2) {
  * node. To build this bath it implements a Breath First Search algorithm. Which means that it
  * will return the path with the least links between the source and destination node.
  */
-bool Network::Graph::getPath(Node::ID srcNode, Node::ID destNode, std::vector<Node*>& parents) {
+bool Network::Graph::getPath(Node::ID srcNode, Node::ID destNode, Path& path) {
 
 	/**
 	 * The search is made from the positive source node to the negative destination node.
@@ -74,7 +75,7 @@ bool Network::Graph::getPath(Node::ID srcNode, Node::ID destNode, std::vector<No
 
 			if(!visited[index(v)]) {
 				fringe.push(v);
-				parents[index(v)] = u;
+				path.setParent(v, u);
 			}
 		}
 	}
