@@ -33,3 +33,21 @@ Network::Link::Flow Network::Path::getMaxFlow() {
 
 	return maxFlow;
 }
+
+
+void Network::Path::adjustFlows(Network::Link::Flow maxFlow) {
+	Node* node = destNode;
+	Node* parent = parents[index(destNode)];
+
+	while(parent != nullptr) {
+		Link* outLink = parent->getOutLink(node);
+		Link* inLink = parent->getInLink(node);
+
+		outLink->setMaxFlow(outLink->getMaxFlow() - maxFlow);
+		inLink->setMaxFlow(inLink->getMaxFlow() + maxFlow);
+
+		// move to next link
+		node = parent;
+		parent = parents[index(node)];
+	}
+}

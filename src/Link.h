@@ -27,6 +27,9 @@ namespace Network {
 			return maxFlow;
 		}
 
+		inline void setMaxFlow(Flow maxFlow) {
+			Link::maxFlow = maxFlow;
+		}
 
 	private:
 		Node* destNode;  // destination node of the link

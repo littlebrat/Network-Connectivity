@@ -29,7 +29,7 @@ namespace Network {
 			parents[index(node)] = parent;
 		}
 
-		void invertLinks();
+		void adjustFlows(Link::Flow maxFlow);
 
 		/**
 		 * The path is invalid if the destination node has no parent. So,to invalidate the path
