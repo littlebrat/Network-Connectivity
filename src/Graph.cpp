@@ -1,6 +1,6 @@
 #include "Graph.h"
 
-Network::Graph::Graph() {
+Network::Graph::Graph() : nodeCount(0) {
 	// ensure that all positions store an empty node
 	for(auto& node : nodes) {
 		node = nullptr;
