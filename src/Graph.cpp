@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Graph.h"
 #include "Path.h"
 
@@ -32,7 +33,9 @@ void Network::Graph::addEdge(Network::Node::ID node1, Network::Node::ID node2) {
 
 	// add an edge between the two supernodes with flow = 1
 	posNode(node1)->addOutLink(negNode(node2).get(), 1);
+	negNode(node2)->addOutLink(posNode(node1).get(), 0);
 	posNode(node2)->addOutLink(negNode(node1).get(), 1);
+	negNode(node1)->addOutLink(posNode(node2).get(), 0);
 
 }
 
@@ -42,8 +45,15 @@ unsigned Network::Graph::getConnectivity(Network::Node::ID srcNode, Network::Nod
 	Path path(*this, posNode(srcNode).get(), negNode(destNode).get());
 
 	while(getPath(srcNode, destNode, path)) {
+
+		// print path
+		std::cout << path << std::endl;
+
 		Link::Flow pathMaxFlow = path.getMaxFlow();
 		path.adjustFlows(pathMaxFlow);
+
+		std::cout << *this << std::endl;
+
 		maxFlow += pathMaxFlow;
 	}
 
