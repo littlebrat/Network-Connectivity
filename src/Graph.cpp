@@ -18,8 +18,7 @@ Network::Graph::Graph() : nodeCount(0) {
 void Network::Graph::addEdge(Network::Node::ID node1, Network::Node::ID node2) {
 
 	// every added node to the graph is considered to be a supernode.
-	// a supernode is composed by the negative node and a positive node linked from the negative to the positive
-	// the negative node jas only the in-links of the supernode and the positive node has the out-links
+	// check the Node.h file for the definition of a supernode.
 
 	// if each node is not already in the graph create a supernode and added to the graph
 	if(negNode(node1) == nullptr) {

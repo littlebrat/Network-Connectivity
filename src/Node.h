@@ -8,14 +8,19 @@
 
 namespace Network {
 
+	/**
+	 * A supernode is composed by the negative node and a positive node linked from the negative
+	 * to the positive. The negative node has only the in-links of the super node and the positive
+	 * node has the out-links. For this reason each node must have a polarity property.
+	 */
+
 	class Node {
-		// allow the Graph class to access the Node constructor
-		friend class Graph;
 
 	public:
 		typedef uint16_t ID;
 		const static ID MAX_ID = 99;  // nodes have ids between 0-99
 		typedef std::vector<Link> LinkList;
+
 		enum Polarity { Negative, Positive };
 
 		/*
@@ -27,22 +32,36 @@ namespace Network {
 			}
 		};
 
-		/// public methods ///
-
-		inline ID getId() const { return id; }
-		inline const Polarity& getPolarity() const { return polarity; }
-		inline void addLink(Node* destNode, Link::Flow maxFlow) { outLinks.push_back(Link(destNode, maxFlow)); }
-		inline const LinkList& getLinks() const { return outLinks; }
-
 	private:
+		// allow the Graph class to access the Node constructor
+		friend class Graph;
 
-		// a node can only be created by the graph class
+		// a node can only be created by friend classes
 		Node(ID id, Polarity polarity) : id(id), polarity(polarity) {
 			if(id > MAX_ID) {
 				throw IDException();
 			}
 		}
 
+	public: // public methods
+
+		inline ID getId() const {
+			return id;
+		}
+		
+		inline const Polarity& getPolarity() const {
+			return polarity;
+		}
+
+		inline void addOutLink(Node* destNode, Link::Flow maxFlow) {
+			outLinks.push_back(Link(destNode, maxFlow));
+		}
+
+		inline const LinkList& getLinks() const {
+			return outLinks;
+		}
+
+	private:
 		ID id;              // id of the node
 		Polarity polarity;  // polarity of this node
 		LinkList outLinks;  // out links for this node in the graph
