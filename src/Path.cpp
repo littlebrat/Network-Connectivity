@@ -6,6 +6,30 @@ Network::Path::Path(Network::Graph& graph, Network::Node* srcNode, Network::Node
 		, destNode(destNode)
 		, parents(graph.nodes.size()) {
 
-	// ensure that the path is initialized invalid
-	invalidate();
+	reset();
+}
+
+/**
+ * Returns the maxflow of the path. If the path is not valid the maxflow will be zero.
+ */
+Network::Link::Flow Network::Path::getMaxFlow() {
+
+	Link::Flow maxFlow = UINT16_MAX;
+
+	Node* node = destNode;
+	Node* parent = parents[index(destNode)];
+
+	while(parent != nullptr) {
+		Link::Flow linkMaxFlow = parent->getOutLink(node)->getMaxFlow();
+
+		if(linkMaxFlow < maxFlow) {
+			maxFlow = linkMaxFlow;
+		}
+
+		// move to next link
+		node = parent;
+		parent = parents[index(node)];
+	}
+
+	return maxFlow;
 }
