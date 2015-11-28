@@ -28,7 +28,7 @@ void Network::Graph::addEdge(Network::Node::ID node1, Network::Node::ID node2) {
 		posNode(node1).reset(new Node(node1, Node::Polarity::Positive));
 
 		// add link between the nodes of the supernode
-		negNode(node1)->addLink(posNode(node1).get(), DEFAULT_FLOW);
+		negNode(node1)->addOutLink(posNode(node1).get(), DEFAULT_FLOW);
 
 		nodeCount += 2;
 	}
@@ -40,14 +40,14 @@ void Network::Graph::addEdge(Network::Node::ID node1, Network::Node::ID node2) {
 		posNode(node2).reset(new Node(node2, Node::Polarity::Positive));
 
 		// add link between the nodes of the supernode
-		negNode(node2)->addLink(posNode(node2).get(), DEFAULT_FLOW);
+		negNode(node2)->addOutLink(posNode(node2).get(), DEFAULT_FLOW);
 
 		nodeCount += 2;
 	}
 
 	// add an edge between the two supernodes
-	posNode(node1)->addLink(negNode(node2).get(), DEFAULT_FLOW);
-	posNode(node2)->addLink(negNode(node1).get(), DEFAULT_FLOW);
+	posNode(node1)->addOutLink(negNode(node2).get(), DEFAULT_FLOW);
+	posNode(node2)->addOutLink(negNode(node1).get(), DEFAULT_FLOW);
 
 }
 
