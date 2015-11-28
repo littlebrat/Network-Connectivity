@@ -1,4 +1,6 @@
+#include <iostream>
 #include "Graph.h"
+#include "Path.h"
 
 Network::Graph::Graph() : nodeCount(0) {
 	// ensure that all positions store an empty node
@@ -31,8 +33,31 @@ void Network::Graph::addEdge(Network::Node::ID node1, Network::Node::ID node2) {
 
 	// add an edge between the two supernodes with flow = 1
 	posNode(node1)->addOutLink(negNode(node2).get(), 1);
+	negNode(node2)->addOutLink(posNode(node1).get(), 0);
 	posNode(node2)->addOutLink(negNode(node1).get(), 1);
+	negNode(node1)->addOutLink(posNode(node2).get(), 0);
 
+}
+
+unsigned Network::Graph::getConnectivity(Network::Node::ID srcNode, Network::Node::ID destNode) {
+
+	Link::Flow maxFlow = 0;
+	Path path(*this, posNode(srcNode).get(), negNode(destNode).get());
+
+	while(getPath(srcNode, destNode, path)) {
+
+		// print path
+		std::cout << path << std::endl;
+
+		Link::Flow pathMaxFlow = path.getMaxFlow();
+		path.adjustFlows(pathMaxFlow);
+
+		std::cout << *this << std::endl;
+
+		maxFlow += pathMaxFlow;
+	}
+
+	return maxFlow;
 }
 
 /**
@@ -40,7 +65,7 @@ void Network::Graph::addEdge(Network::Node::ID node1, Network::Node::ID node2) {
  * node. To build this bath it implements a Breath First Search algorithm. Which means that it
  * will return the path with the least links between the source and destination node.
  */
-bool Network::Graph::getPath(Node::ID srcNode, Node::ID destNode, std::vector<Node*>& parents) {
+bool Network::Graph::getPath(Node::ID srcNode, Node::ID destNode, Path& path) {
 
 	/**
 	 * The search is made from the positive source node to the negative destination node.
@@ -69,12 +94,15 @@ bool Network::Graph::getPath(Node::ID srcNode, Node::ID destNode, std::vector<No
 
 		// Add successors of u to the queue, if they have not been visited yet.
 		for(auto& link : u->getLinks()) {
+			
+			// consider the links with flow 0 to not exist
+			if(link.getMaxFlow() > 0) {
+				Node* v = link.getDestNode();
 
-			Node* v = link.getDestNode();
-
-			if(!visited[index(v)]) {
-				fringe.push(v);
-				parents[index(v)] = u;
+				if (!visited[index(v)]) {
+					fringe.push(v);
+					path.setParent(v, u);
+				}
 			}
 		}
 	}

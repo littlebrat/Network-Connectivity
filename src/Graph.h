@@ -12,7 +12,11 @@
 
 namespace Network {
 
+	class Path;
+
 	class Graph {
+
+		friend class Path;
 
 	public:
 		typedef std::unique_ptr<Node> NodePtr;
@@ -28,6 +32,8 @@ namespace Network {
 
 		void addEdge(Node::ID srcNode, Node::ID destNode);
 		inline size_t size() const { return nodeCount / 2; }
+
+		unsigned int getConnectivity(Node::ID srcNode, Node::ID destNode);
 
 	private:
 		NodeHolder nodes;   // stores all the nodes in the graph
@@ -66,7 +72,7 @@ namespace Network {
 		inline NodePtr& negNode(Node::ID id) { return nodes[2 * id]; }
 		inline NodePtr& posNode(Node::ID id) { return nodes[2 * id + 1]; }
 
-		bool getPath(Node::ID start_node, Node::ID goal_node, std::vector<Node*>& parents);
+		bool getPath(Node::ID srcNode, Node::ID destNode, Path& path);
 	};
 
 	inline Graph::Index index(const Node* node) {
