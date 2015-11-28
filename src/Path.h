@@ -46,6 +46,30 @@ namespace Network {
 		Node* destNode;             // last node in the path
 		std::vector<Node*> parents; // stores the parents of each node
 
+		/*
+		 * Allows Path objects to be printed in the same form as other types (e.g. cout << path << endl).
+		 * It must be a friend method because it needs to access private members.
+		 * Paths are printed in the following format: Path(destnode<-node<-srcnode)
+		 */
+		friend std::ostream& operator<<(std::ostream& out, const Path& path) {
+			using namespace std;
+
+			out << "Path(";
+
+			Node* node = path.destNode;
+			while(node != nullptr) {
+				Node* parent = path.parents[index(node)];
+				out << *node;
+				if(parent != nullptr) {
+					out << "<-";
+				}
+
+				node = parent;
+			}
+
+			return out;
+		}
+		
 	};
 
 }
