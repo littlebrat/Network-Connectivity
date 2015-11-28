@@ -84,12 +84,15 @@ bool Network::Graph::getPath(Node::ID srcNode, Node::ID destNode, Path& path) {
 
 		// Add successors of u to the queue, if they have not been visited yet.
 		for(auto& link : u->getLinks()) {
+			
+			// consider the links with flow 0 to not exist
+			if(link.getMaxFlow() > 0) {
+				Node* v = link.getDestNode();
 
-			Node* v = link.getDestNode();
-
-			if(!visited[index(v)]) {
-				fringe.push(v);
-				path.setParent(v, u);
+				if (!visited[index(v)]) {
+					fringe.push(v);
+					path.setParent(v, u);
+				}
 			}
 		}
 	}
