@@ -12,7 +12,11 @@
 
 namespace Network {
 
+	class Path;
+
 	class Graph {
+
+		friend class Path;
 
 	public:
 		typedef std::unique_ptr<Node> NodePtr;
