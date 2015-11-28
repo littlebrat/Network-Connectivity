@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include "../src/Graph.h"
 
 using namespace Network;
@@ -16,42 +17,53 @@ Graph simpleGraph() {
 	return graph;
 }
 
-unsigned testConnectivity(Graph& graph, Node::ID srcId, Node::ID destId) {
-	unsigned connectivity = graph.getConnectivity(srcId, destId);
-	std::cout << "connectivity(" << srcId << ", " << destId << "): " << connectivity << std::endl;
-	return connectivity;
+void disableOutput() {
+	std::cout.setstate(std::ios_base::failbit);
 }
 
-void test1() {
-	std::cout << "Test 1:" << std::endl;
+void enableOutput() {
+	std::cout.clear();
+}
 
-	Graph graph = simpleGraph();
+void test(Graph& graph, Node::ID srcId, Node::ID destId, unsigned testId, unsigned expected, bool verbose = false) {
+	
+	if(!verbose)
+		disableOutput();
+
+	std::cout << "Test " << testId << std::endl;
 	std::cout << graph << std::endl;
 
-	if(testConnectivity(graph, 0, 3) == 2)
-		std::cout << "Test 1 OK" << std::endl;
+	unsigned connectivity = graph.getConnectivity(srcId, destId);
+	std::cout << "connectivity(" << srcId << ", " << destId << "): " << connectivity << std::endl;
+
+	if(!verbose)
+		enableOutput();
+
+	if(connectivity == expected)
+		std::cout << "Test " << testId << " OK" << std::endl;
 	else
-		std::cout << "Test 1 FAILED" << std::endl;
+		std::cout << "Test " << testId << " FAILED" << std::endl;
 }
 
-void test2() {
-	std::cout << "Test 2:" << std::endl;
+void test1(bool verbose = false) {
+	Graph graph = simpleGraph();
+	test(graph, 0, 3, 1, 2, verbose);
+}
 
+void test2(bool verbose = false) {
 	Graph graph;
 	graph.addEdge(0, 1);
 	graph.addEdge(0, 2);
 	graph.addEdge(1, 2);
 	graph.addEdge(1, 3);
-	std::cout << graph << std::endl;
+	graph.addEdge(2, 3);
 
-	if(testConnectivity(graph, 0, 3) == 2)
-		std::cout << "Test 2 OK" << std::endl;
-	else
-		std::cout << "Test 2 FAILED" << std::endl;
+	test(graph, 0, 3, 2, 2, verbose);
 }
 
 int main() {
 
+	test1();
 	test2();
 	return 0;
 }
