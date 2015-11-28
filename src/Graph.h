@@ -33,9 +33,6 @@ namespace Network {
 		NodeHolder nodes;   // stores all the nodes in the graph
 		size_t nodeCount;   // number of actual node in the graph (its the number of nodes and ot super nodes
 
-		// defines the default flow of the links in the graph
-		const static Link::Flow DEFAULT_FLOW = 1;
-
 		/*
 		 * Allows that Graph objects can be printed in the same form as other types.
 		 * (e.g. std::cout << graph << std::endl)
@@ -58,6 +55,8 @@ namespace Network {
 
 			return out;
 		}
+
+		void createSupernode(Node::ID nodeId);
 
 		/*
 		 * These methods should be used to access the negative and positive nodes of a specific supernode.
