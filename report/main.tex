@@ -47,6 +47,8 @@ O problema de encontrar o menor número de nós que se tem de remover para separ
 
 Este problema pode então ser modulado como um problema de fluxos máximos, fazendo \textit{vertex-splitting} e atribuíndo à ligação interna do super-nó uma capacidade unitária. A todas as outras ligações da rede foi atribuída uma capacidade igual a infinito, apesar da estratégia também ser válida para uma capacidade unitária dessas mesmas ligações.
 
+\section{Número de nós que separa uma fonte de um destino}
+
 
 
 \begin{algorithm}
@@ -63,10 +65,13 @@ Este problema pode então ser modulado como um problema de fluxos máximos, faze
       \If{u = goal}
       		\Return parent 
       \EndIf
-      \For{each outward link $uv$ in $neighbors[u]$}
-        \If{$dist[v] > dist[u] + 1$}
-        	\State {$dist[v] := dist[u] + 1$}
-            \State {$Q := Q \cup \{v\}$}
+      \For{each $link$ in $links[u]$}
+        \If{$maxFlow(link) > 0$}
+        	\State neighbour = link.tail
+        	\If{$visited[neighbour]$ is $False$}
+				\State $parent[neighbour] := u $
+            	\State {$Queue := Queue \cup \{v\}$}
+            \EndIf
         \EndIf
       \EndFor
   	\EndWhile
