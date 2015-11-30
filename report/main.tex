@@ -39,6 +39,14 @@
 
 \section{O Problema}
 
+Neste relatório é descrito um procedimento para calcular o número mínimo de nós retirados que impeça a rede de permanecer ligada. Para a resolução do problema é descrito um procedimento que funciona para qualquer grafo genérico.
+
+A conectividade da rede é um parâmetro global desta e por isso, pode ser descrita como o mínimo número de nós removidos que separa um par fonte-destino dessa rede, no conjunto de todos os pares possíveis.
+
+O problema de encontrar o menor número de nós que se tem de remover para separar a fonte do destino é equivalente a encontrar o número de caminhos disjuntos na rede entre este par.
+
+Este problema pode então ser modulado como um problema de fluxos máximos, fazendo \textit{vertex-splitting} e atribuíndo à ligação interna do super-nó uma capacidade unitária. A todas as outras ligações da rede foi atribuída uma capacidade igual a infinito, apesar da estratégia também ser válida para uma capacidade unitária dessas mesmas ligações.
+
 
 
 \begin{algorithm}
