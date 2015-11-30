@@ -1,0 +1,71 @@
+\documentclass[12pt,a4paper]{scrartcl}
+
+
+\usepackage[portuguese]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{aeguill}
+\usepackage{pbox}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{mathtools}
+\usepackage{bmpsize}
+\usepackage[toc,page]{appendix}
+\linespread{1}
+
+\begin{document}
+\everymath{\displaystyle}
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\begin{titlepage}
+	\begin{center}
+		\hfill \break
+		\hfill \break
+		\includegraphics[scale = 0.35]{Logo}~\\[1cm]
+		\textsc{\LARGE Instituto Superior Técnico}\\[0.25cm]
+		\textsc{\Large Mestrado Integrado em Engenharia Electrotécnica e de Computadores}\\[1.8cm]
+		\textsc{\huge Algoritmia e Desempenho Em Redes de Computadores}\\[0.25cm]
+		{\huge \bfseries  Conectividade na Internet\\[1cm]}
+		\begin{tabular}{ l l }
+			David Fialho & \hspace{2mm} n.º 73530 \\
+			Nuno Mendes & \hspace{2mm} n.º 73716 
+		\end{tabular}
+		\vfill
+		{\large Lisboa, 4 de Dezembro de 2015}
+	\end{center}
+\end{titlepage}
+
+\pagebreak
+
+\section{O Problema}
+
+
+
+\begin{algorithm}
+\caption{Algoritmo BFS adaptado que procura um caminho entre o nó fonte \textit{s} e o destino \textit{t}.}\label{alg:bfs_goal}
+\begin{algorithmic}[1]
+\Procedure{getPath}{$graph, source$}
+	\For{each node $n$ in $graph$}
+    	\State $visited[n] := False $
+    	\State $parent[n] := \emptyset $
+    \EndFor
+    \State $Queue :=  \{destination\}$
+  	\While{$Queue$ is not $empty$}
+      \State {select first node $u$ from $queue$}
+      \If{u = goal}
+      		\Return parent 
+      \EndIf
+      \For{each outward link $uv$ in $neighbors[u]$}
+        \If{$dist[v] > dist[u] + 1$}
+        	\State {$dist[v] := dist[u] + 1$}
+            \State {$Q := Q \cup \{v\}$}
+        \EndIf
+      \EndFor
+  	\EndWhile
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+
+
+\end{document}
