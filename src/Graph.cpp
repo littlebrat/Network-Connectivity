@@ -1,8 +1,22 @@
 #include <iostream>
+#include <fstream>
 #include "Graph.h"
 #include "Path.h"
 
 namespace Network {
+
+	Graph::Graph(const std::string &filename) {
+		std::ifstream inFile(filename, std::ifstream::in);
+
+		if(!inFile.is_open()) {
+			throw std::string("can't open input file");
+		}
+
+		uint16_t id1, id2;
+		while(inFile >> id1 >> id2) {
+			addEdge(id1, id2);
+		}
+	}
 
 	/**
 	 * Adds a new edge to the graph. An edge is considered to be two links with inverse directions, which means
