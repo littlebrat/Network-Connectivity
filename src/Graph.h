@@ -39,6 +39,10 @@ namespace Network {
 			return getConnectivityByNetid(idGenerator.netid(srcNode), idGenerator.netid(destNode));
 		}
 
+		typedef std::vector<unsigned> Distribuition;
+
+		Distribuition getDistribuition() const;
+
 	private:
 		unsigned getConnectivityByNetid(Node::ID srcNetid, Node::ID destNetid) const;
 

@@ -76,4 +76,26 @@ namespace Network {
 
 		return maxFlow;
 	}
+
+	Graph::Distribuition Graph::getDistribuition() const {
+
+		Distribuition connectivities(nodes.size() + 1, 0);
+
+		for(Index u = 0; u < nodes.size(); u++) {
+			for(Index v = u + 1; v < nodes.size(); v++) {
+
+				unsigned connectivity = getConnectivityByNetid(u, v);
+
+				if(connectivity == Link::FLOW_INFINITY) {
+					// store the infinity count in the extra spot of the connectivities
+					connectivities[nodes.size()]++;
+				} else {
+					connectivities[connectivity]++;
+				}
+
+			}
+		}
+
+		return connectivities;
+	}
 }
