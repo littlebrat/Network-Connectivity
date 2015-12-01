@@ -52,7 +52,8 @@ void Network::ResidualGraph::print() {
     }
 }
 
-bool Network::ResidualGraph::getPath(Network::Node::ID srcNetid, Network::Node::ID destNetid, Network::Path &path) {
+bool Network::ResidualGraph::getPath(Network::Node::ID srcNetid, Network::Node::ID destNetid,
+                                     Network::Path &path, std::vector<bool>& visited) {
 
     /**
 	 * The search is made from the positive source node to the negative destination node.
@@ -60,8 +61,6 @@ bool Network::ResidualGraph::getPath(Network::Node::ID srcNetid, Network::Node::
     bool found = false;
 
     std::queue<Subnode*> fringe;
-    // visited nodes all initialized with False.
-    std::vector<bool> visited(subnodes.size(), false);
     visited[negIndex(srcNetid)] = true;
     visited[posIndex(destNetid)] = true;
 
@@ -95,4 +94,21 @@ bool Network::ResidualGraph::getPath(Network::Node::ID srcNetid, Network::Node::
     }
 
     return found;
+}
+
+void Network::ResidualGraph::getDisconnectedNodes(const std::vector<bool> &visited,
+                                                  Network::Connectivity &connectivity) {
+
+    // find super nodes where the negative node is visited and the positive node is not
+
+    for(auto& node : subnodes) {
+
+        if(!visited[index(node.get())]) {
+            if(node->isPositive() && visited[negIndex(node->getNetid())]) {
+                // this supernode is a disconnect node
+                // store the id of the node
+                connectivity.addDisconnectNode(node->getId());
+            }
+        }
+    }
 }
