@@ -24,52 +24,49 @@ void disableOutput() {
 void enableOutput() {
 	std::cout.clear();
 }
-//
-//void test(Graph& graph, Node::ID srcId, Node::ID destId, unsigned testId, unsigned expected, bool verbose = false) {
-//
-//	if(!verbose)
-//		disableOutput();
-//
-//	std::cout << "Test " << testId << std::endl;
-//	graph.print();
-//
-//	unsigned connectivity = graph.getConnectivity(srcId, destId);
-//	std::cout << "connectivity(" << srcId << ", " << destId << "): " << connectivity << std::endl;
-//
-//	if(!verbose)
-//		enableOutput();
-//
-//	if(connectivity == expected)
-//		std::cout << "Test " << testId << " OK" << std::endl;
-//	else
-//		std::cout << "Test " << testId << " FAILED" << std::endl;
-//}
-//
-//void test1(bool verbose = false) {
-//	Graph graph = simpleGraph();
-//	test(graph, 0, 3, 1, 2, verbose);
-//}
-//
-//void test2(bool verbose = false) {
-//	Graph graph;
-//	graph.addEdge(0, 1);
-//	graph.addEdge(0, 2);
-//	graph.addEdge(1, 2);
-//	graph.addEdge(1, 3);
-//	graph.addEdge(2, 3);
-//
-//	test(graph, 0, 3, 2, 2, verbose);
-//}
+
+void test(Graph& graph, Node::ID srcId, Node::ID destId, unsigned testId, unsigned expected, bool verbose = false) {
+
+	if(!verbose)
+		disableOutput();
+
+	std::cout << "Test " << testId << std::endl;
+	graph.print();
+
+	unsigned connectivity = graph.getConnectivity(srcId, destId);
+	std::cout << "connectivity(" << srcId << ", " << destId << "): " << connectivity << std::endl;
+
+	if(!verbose)
+		enableOutput();
+
+	if(connectivity == expected)
+		std::cout << "Test " << testId << " OK" << std::endl;
+	else
+		std::cout << "Test " << testId << " FAILED" << std::endl;
+}
+
+void test1(bool verbose = false) {
+	Graph graph = simpleGraph();
+	test(graph, 0, 3, 1, 2, verbose);
+}
+
+void test2(bool verbose = false) {
+	Graph graph;
+	graph.addEdge(0, 1);
+	graph.addEdge(0, 2);
+	graph.addEdge(1, 2);
+	graph.addEdge(1, 3);
+	graph.addEdge(2, 3);
+
+	test(graph, 0, 3, 2, 2, verbose);
+}
+
+bool verbose = true;
 
 int main() {
 
-	Graph graph = simpleGraph();
-	graph.print();
-
-	ResidualGraph residualGraph(graph);
-	std::cout << "Residual" << std::endl;
-	residualGraph.print();
-
+	test1(verbose);
+	test2(verbose);
 
 	return 0;
 }
