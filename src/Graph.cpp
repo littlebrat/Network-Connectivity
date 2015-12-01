@@ -67,11 +67,8 @@ namespace Network {
 				  residual.subnodes[negIndex(destNetid)].get());
 
 		while(residual.getPath(srcNetid, destNetid, path)) {
-
-			Link::Flow pathMaxFlow = path.getFlow();
-			path.adjustFlows(pathMaxFlow);
-
-			maxFlow += pathMaxFlow;
+			path.adjustFlows();
+			maxFlow += 1;
 		}
 
 		return maxFlow;

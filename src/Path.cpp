@@ -35,7 +35,7 @@ Network::Link::Flow Network::Path::getFlow() {
 }
 
 
-void Network::Path::adjustFlows(Network::Link::Flow flow) {
+void Network::Path::adjustFlows() {
 	Subnode* node = destSubnode;
 	Subnode* parent = parents[index(destSubnode)];
 
@@ -43,8 +43,8 @@ void Network::Path::adjustFlows(Network::Link::Flow flow) {
 		Link* outLink = parent->getOutLink(node);
 		Link* inLink = parent->getInLink(node);
 
-		outLink->setFlow(outLink->getFlow() - flow);
-		inLink->setFlow(inLink->getFlow() + flow);
+		outLink->setFlow((Link::Flow) (outLink->getFlow() - 1));
+		inLink->setFlow((Link::Flow) (inLink->getFlow() + 1));
 
 		// move to next link
 		node = parent;
