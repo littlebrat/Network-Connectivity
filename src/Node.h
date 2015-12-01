@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <vector>
 #include <ostream>
+#include <sstream>
 #include "Link.h"
 
 namespace Network {
@@ -79,19 +80,17 @@ namespace Network {
 			return srcNode->getOutLink(this);
 		}
 
+		inline virtual std::string toString() const {
+			std::ostringstream stringStream;
+			stringStream << "Node(" << this->getId() << ")";
+			return stringStream.str();
+		}
+
 	protected:
 		// a node can only be created by friend classes or by subclasses
 		Node(ID id, ID netid) : id(id), netid(netid) { }
 
 	};
-
-	/*
-	 * Allows that Node objects can be printed in the same form as other types.
-	 * (e.g. std::cout << node << std::endl)
-	 */
-	inline std::ostream& operator<<(std::ostream& out, const Node& node) {
-		return out << "Node(" << node.getId() << ")";
-	}
 
 }
 

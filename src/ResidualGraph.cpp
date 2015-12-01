@@ -42,7 +42,7 @@ void Network::ResidualGraph::print() {
     cout << "Graph" << endl;
     for(auto& node : subnodes) {
         if(node != nullptr) {
-            cout << *node << "[ ";
+            cout << node->toString() << "[ ";
 
             for (auto& link : node->getOutLinks()) {
                 cout << link << " ";
@@ -50,4 +50,49 @@ void Network::ResidualGraph::print() {
             cout << "]" << endl;
         }
     }
+}
+
+bool Network::ResidualGraph::getPath(Network::Node::ID srcNetid, Network::Node::ID destNetid, Network::Path &path) {
+
+    /**
+	 * The search is made from the positive source node to the negative destination node.
+	 */
+    bool found = false;
+
+    std::queue<Subnode*> fringe;
+    // visited nodes all initialized with False.
+    std::vector<bool> visited(subnodes.size(), false);
+    visited[negIndex(srcNetid)] = true;
+    visited[posIndex(destNetid)] = true;
+
+    // push outward node from the starting node to the queue.
+    fringe.push(subnodes[posIndex(srcNetid)].get());
+
+    while(!fringe.empty()) {
+
+        Subnode* u = fringe.front();
+        fringe.pop();
+        visited[index(u)] = true;
+
+        if(u == subnodes[negIndex(destNetid)].get()) {
+            found = true;
+            break;
+        }
+
+        // Add successors of u to the queue, if they have not been visited yet.
+        for(auto& link : u->getOutLinks()) {
+
+            // consider the links with flow 0 to not exist
+            if(link.getFlow() > 0) {
+                Subnode* v = (Subnode*) link.getOutNode();
+
+                if (!visited[index(v)]) {
+                    fringe.push(v);
+                    path.setParent(v, u);
+                }
+            }
+        }
+    }
+
+    return found;
 }

@@ -60,7 +60,7 @@ namespace Network {
             Subnode* node = path.destSubnode;
             while(node != nullptr) {
                 Subnode* parent = path.parents[index(node)];
-                out << *node;
+                out << node->toString();
                 if(parent != nullptr) {
                     out << "<-";
                 }

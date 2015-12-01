@@ -66,5 +66,10 @@ int main() {
 	Graph graph = simpleGraph();
 	graph.print();
 
+	ResidualGraph residualGraph(graph);
+	std::cout << "Residual" << std::endl;
+	residualGraph.print();
+
+
 	return 0;
 }

@@ -7,6 +7,7 @@
 namespace Network {
 
     class Graph;
+    class Path;
 
     typedef uint16_t Index;
 
