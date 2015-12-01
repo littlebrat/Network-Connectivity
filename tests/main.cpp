@@ -33,7 +33,7 @@ void test(Graph& graph, Node::ID srcId, Node::ID destId, unsigned testId, unsign
 	std::cout << "Test " << testId << std::endl;
 	graph.print();
 
-	unsigned connectivity = graph.getConnectivity(srcId, destId);
+	Connectivity connectivity = graph.getConnectivity(srcId, destId);
 	std::cout << "connectivity(" << srcId << ", " << destId << "): " << connectivity << std::endl;
 
 	if(!verbose)
@@ -49,7 +49,9 @@ void test(Graph& graph, Node::ID srcId, Node::ID destId, unsigned testId, unsign
 	}
 	std::cout << "connectivity[INFINITY]=" << distribuition[distribuition.size() - 1] << std::endl;
 
-	if(connectivity == expected)
+	std::cout << "Network Connectivity: " << graph.getConnectivity() << std::endl;
+
+	if(connectivity.getValue() == expected)
 		std::cout << "Test " << testId << " OK" << std::endl;
 	else
 		std::cout << "Test " << testId << " FAILED" << std::endl;
