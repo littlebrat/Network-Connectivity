@@ -1,3 +1,4 @@
+#include <iostream>
 #include "ResidualGraph.h"
 #include "Graph.h"
 
@@ -31,6 +32,22 @@ Network::ResidualGraph::ResidualGraph(const Network::Graph &graph) {
 
             // add a link with flow zero in the inverse direction
             subnodes[negIndex(destNetid)]->addOutLink(subnodes[posIndex(srcNetid)].get(), 0);
+        }
+    }
+}
+
+void Network::ResidualGraph::print() {
+    using namespace std;
+
+    cout << "Graph" << endl;
+    for(auto& node : subnodes) {
+        if(node != nullptr) {
+            cout << *node << "[ ";
+
+            for (auto& link : node->getOutLinks()) {
+                cout << link << " ";
+            }
+            cout << "]" << endl;
         }
     }
 }
