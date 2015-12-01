@@ -2,6 +2,7 @@
 #define SUBNODE_H
 
 
+#include <sstream>
 #include "Node.h"
 
 namespace Network {
@@ -30,11 +31,16 @@ namespace Network {
 			return getPolarity() == Polarity::Negative;
 		}
 
+		inline virtual std::string toString() const {
+			std::ostringstream stringStream;
+			char sign = this->isNegative() ? '-' : '+';
+			stringStream << "Node(" << this->getId() << ", " << sign << ")";
+			return stringStream.str();
+		}
+
 	protected:
 		// a node can only be created by friend classes or by subclasses
-		Subnode(ID id, ID netid, Polarity polarity)
-				: Node((ID) (polarity == Polarity::Negative ? -1 * id : id), netid)
-				, polarity(polarity) { }
+		Subnode(ID id, ID netid, Polarity polarity) : Node(id, netid), polarity(polarity) { }
 
 	};
 

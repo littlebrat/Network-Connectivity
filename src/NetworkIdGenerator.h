@@ -13,7 +13,7 @@ namespace Network {
 		NetworkIdGenerator() : netidCount(0) {}
 
 		Node::ID getNetid(Node::ID id);
-		inline Node::ID netid(Node::ID id) {
+		inline Node::ID netid(Node::ID id) const {
 			return idMap.at(id);
 		}
 

@@ -12,6 +12,7 @@
 #include "Subnode.h"
 #include "NetworkIdGenerator.h"
 #include "ResidualGraph.h"
+#include "Path.h"
 
 namespace Network {
 
@@ -32,12 +33,14 @@ namespace Network {
 
 		void addEdge(Node::ID srcNode, Node::ID destNode);
 		inline size_t nodeCount() const { return nodes.size(); }
-
 		void print();
 
-	private:
+		inline unsigned getConnectivity(Node::ID srcNode, Node::ID destNode) const {
+			return getConnectivityByNetid(idGenerator.netid(srcNode), idGenerator.netid(destNode));
+		}
 
-		ResidualGraph getResidualGraph() const;
+	private:
+		unsigned getConnectivityByNetid(Node::ID srcNetid, Node::ID destNetid) const;
 
 	};
 
