@@ -16,7 +16,7 @@ Network::ResidualGraph::ResidualGraph(const Network::Graph &graph) {
         // add link from the negative node to the positive node with unitary flow
         subnodes[negIndex(netid)]->addOutLink(subnodes[posIndex(netid)].get(), 1);
         // add link from the negative node to the positive node with flow zero
-        subnodes[posIndex(netid)]->addOutLink(subnodes[negIndex(netid)].get(), 1);
+        subnodes[posIndex(netid)]->addOutLink(subnodes[negIndex(netid)].get(), 0);
     }
 
     // link between all the supernodes
