@@ -9,7 +9,7 @@ namespace Network {
     class Graph;
     class Path;
 
-    typedef uint16_t Index;
+    typedef unsigned Index;
 
     class ResidualGraph {
 
