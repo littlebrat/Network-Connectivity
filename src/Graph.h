@@ -10,28 +10,27 @@
 #include "Node.h"
 #include "Link.h"
 #include "Subnode.h"
+#include "NetworkIdGenerator.h"
 
 namespace Network {
 
 	class Graph {
 
 		typedef std::unique_ptr<Node> NodeOwner;
-		typedef std::array<NodeOwner, Node::MAX_ID + 1> NodeList;
-		typedef std::unique_ptr<Link> LinkOwner;
-		typedef std::array<LinkOwner, Node::MAX_ID + 1> LinkList;
+		typedef std::vector<NodeOwner> NodeList;
 
 		typedef std::unique_ptr<Subnode> SubnodeOwner;
-		typedef std::array<SubnodeOwner, 2 * (Node::MAX_ID + 1)> SubnodeList;
+		typedef std::vector<SubnodeOwner> SubnodeList;
 
 		/// private members ///
 		NodeList nodes;
-		LinkList outLinks;
+		NetworkIdGenerator idGenerator;
 
 	public:
 		// type for the indexes of each node in the graph
 		typedef uint16_t Index;
 
-		Graph();
+		Graph() {}
 		Graph(const std::string& filename);
 
 		void addEdge(Node::ID srcNode, Node::ID destNode);
@@ -43,11 +42,11 @@ namespace Network {
 
 	private:
 
-		template <typename T, size_t N>
-		void print(const std::array<T, N>& nodes) const;
+		template <typename T>
+		void print(const std::vector<T>& nodes) const;
 
-		inline Node* negNode(Node::ID id) { return nodes[2 * id].get(); }
-		inline Node* posNode(Node::ID id) { return nodes[2 * id + 1].get(); }
+		inline Node* negNode(Node::ID netid) { return nodes[2 * netid].get(); }
+		inline Node* posNode(Node::ID netid) { return nodes[2 * netid + 1].get(); }
 	};
 
 	inline Graph::Index index(const Subnode* node) {

@@ -1,22 +1,40 @@
 #include <iostream>
 #include "Graph.h"
-//#include "Path.h"
-//
-//Network::Graph::Graph() : nodeCount(0) {
-//	// ensure that all positions store an empty node
-//	for(auto& node : nodes) {
-//		node = nullptr;
-//	}
-//}
-//
-///**
-// * Adds a new edge to the graph. An edge is considered to be two links with inverse directions, which means
-// * that the two nodes will be linked between each other.
-// * When a new edge is added the nodes are added to the graph as well if they didn't exist in the graph
-// * before.
-// * @param node1 id of one node of the edge
-// * @param node2 id of the other node of the edge
-// */
+
+namespace Network {
+
+	/**
+	 * Adds a new edge to the graph. An edge is considered to be two links with inverse directions, which means
+	 * that the two nodes will be linked between each other.
+	 * When a new edge is added the nodes are added to the graph as well if they didn't exist in the graph
+	 * before.
+	 * @param node1 id of one node of the edge
+	 * @param node2 id of the other node of the edge
+	 */
+	void Graph::addEdge(Node::ID srcId, Node::ID destId) {
+		Node::ID srcNetid = idGenerator.getNetid(srcId);
+		Node::ID destNetid = idGenerator.getNetid(destId);
+
+		if(srcNetid >= nodes.size()) {
+			// source is a new node
+			// create the node and add it to the nodes list
+			nodes.push_back(std::unique_ptr<Node>(new Node(srcId, srcNetid)));
+		}
+
+		if(destNetid >= nodes.size()) {
+			// destination is a new node
+			// create the node and add it to the nodes list
+			nodes.push_back(std::unique_ptr<Node>(new Node(destId, destNetid)));
+		}
+
+		// double link the nodes
+		nodes[srcNetid]->addOutLink(nodes[destNetid].get());
+		nodes[destNetid]->addOutLink(nodes[srcNetid].get());
+	}
+}
+
+
+
 //void Network::Graph::addEdge(Network::Node::ID node1, Network::Node::ID node2) {
 //
 //	// every added node to the graph is considered to be a supernode.
@@ -127,7 +145,3 @@
 //	nodeCount += 2;
 //}
 
-template<typename T, size_t N>
-void Network::Graph::print(const std::array<T, N>& nodes) const {
-
-}
