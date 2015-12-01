@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <vector>
 #include <ostream>
+#include "Link.h"
 
 namespace Network {
 
@@ -18,11 +19,13 @@ namespace Network {
 	public: // types
 		typedef uint16_t ID;
 		const static ID MAX_ID = 99;  // nodes have ids between 0-99
+		typedef std::vector<Link> LinkList;
 
 	private:
 		/// private members ///
 		ID id;      // id of the node
 		ID netid;   // network id of the node
+		LinkList outLinks;
 
 		/// friend classes ///
 		// allow the Graph class to access the Node constructor
@@ -36,6 +39,44 @@ namespace Network {
 
 		inline ID getNetid() const {
 			return netid;
+		}
+
+		inline void addOutLink(Node* destNode, Link::Flow flow = Link::FLOW_INFINITY) {
+			outLinks.push_back(Link(destNode, flow));
+		}
+
+		inline LinkList& getOutLinks() {
+			return outLinks;
+		}
+
+		inline const LinkList& getOutLinks() const {
+			return outLinks;
+		}
+
+		Link* getOutLink(Node* destNode) {
+			for(auto it = outLinks.begin(); it != outLinks.end(); it++) {
+				if(it->getOutNode() == destNode)
+					return &(*it);
+			}
+
+			return nullptr;
+		}
+
+		const Link* getOutLink(const Node* destNode) const {
+			for(auto it = outLinks.begin(); it != outLinks.end(); it++) {
+				if(it->getOutNode() == destNode)
+					return &(*it);
+			}
+
+			return nullptr;
+		}
+
+		inline Link* getInLink(Node* srcNode) {
+			return srcNode->getOutLink(this);
+		}
+
+		inline const Link* getInLink(const Node* srcNode) const {
+			return srcNode->getOutLink(this);
 		}
 
 	protected:
