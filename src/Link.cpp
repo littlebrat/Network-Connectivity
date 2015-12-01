@@ -4,7 +4,7 @@
 
 namespace Network {
 	std::ostream& operator<<(std::ostream& out, const Link& link) {
-		out << "Link(" << *link.getDestNode() << ", " << link.getMaxFlow() << ")";
+		out << "Link(" << *link.getOutNode() << ", " << link.getFlow() << ")";
 		return out;
 	}
 }
