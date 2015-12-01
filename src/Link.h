@@ -13,27 +13,31 @@ namespace Network {
 	 */
 	class Link {
 
-	public:
+	public: // public types
 		// flows can only have 3 values 0, 1 and 2
 		typedef uint16_t Flow;
-
-		Link(Node* destNode, Flow maxFlow) : destNode(destNode), maxFlow(maxFlow) { }
-
-		inline Node* getDestNode() const {
-			return destNode;
-		}
-
-		inline Flow getMaxFlow() const {
-			return maxFlow;
-		}
-
-		inline void setMaxFlow(Flow maxFlow) {
-			Link::maxFlow = maxFlow;
-		}
+		static const Flow FLOW_INFINITY = UINT16_MAX;
 
 	private:
-		Node* destNode;  // destination node of the link
-		Flow maxFlow;   // maximum flow that can go through this link
+		/// private members ///
+		Node* outNode;  // out node of the link
+		Flow flow;      // maximum flow that can go through this link
+
+	public:
+
+		Link(Node* outNode, Flow flow = FLOW_INFINITY) : outNode(outNode), flow(flow) { }
+
+		inline Node* getOutNode() const {
+			return outNode;
+		}
+
+		inline Flow getFlow() const {
+			return flow;
+		}
+
+		inline void setFlow(Flow flow) {
+			Link::flow = flow;
+		}
 
 	};
 
