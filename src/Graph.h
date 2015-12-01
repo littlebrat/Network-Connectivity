@@ -35,11 +35,13 @@ namespace Network {
 		inline size_t nodeCount() const { return nodes.size(); }
 		void print();
 
-		unsigned getConnectivity() const;
+		inline unsigned getConnectivity(Node::ID srcNode, Node::ID destNode) const {
+			return getConnectivityByNetid(idGenerator.netid(srcNode), idGenerator.netid(destNode));
+		}
 
 	private:
+		unsigned getConnectivityByNetid(Node::ID srcNetid, Node::ID destNetid) const;
 
-		bool getPath(Node::ID srcNetid, Node::ID destNetid, Path &path);
 	};
 
 }

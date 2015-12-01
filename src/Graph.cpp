@@ -49,56 +49,24 @@ namespace Network {
 		}
 	}
 
-	unsigned Graph::getConnectivity() const {
+	unsigned int Graph::getConnectivityByNetid(Node::ID srcNetid, Node::ID destNetid) const {
 
 		// get the residual graph from the current graph
 		ResidualGraph residual(*this);
 		residual.print();
 
-		unsigned connectivity = 0;
+		Link::Flow maxFlow = 0;
+		Path path(residual, residual.subnodes[posIndex(srcNetid)].get(),
+				  residual.subnodes[negIndex(destNetid)].get());
 
-		return connectivity;
+		while(residual.getPath(srcNetid, destNetid, path)) {
+
+			Link::Flow pathMaxFlow = path.getFlow();
+			path.adjustFlows(pathMaxFlow);
+
+			maxFlow += pathMaxFlow;
+		}
+
+		return maxFlow;
 	}
-
-
 }
-
-//unsigned Network::Graph::getConnectivity(Network::Node::ID srcNode, Network::Node::ID destNode) {
-//
-//	Link::Flow maxFlow = 0;
-//	Path path(*this, posNode(srcNode).get(), negNode(destNode).get());
-//
-//	while(getPath(srcNode, destNode, path)) {
-//
-//		// print path
-//		std::cout << path << std::endl;
-//
-//		Link::Flow pathMaxFlow = path.getMaxFlow();
-//		path.adjustFlows(pathMaxFlow);
-//
-//		std::cout << *this << std::endl;
-//
-//		maxFlow += pathMaxFlow;
-//	}
-//
-//	return maxFlow;
-//}
-
-//
-//void Network::Graph::createSupernode(Node::ID nodeId) {
-//
-//	// create the negative node
-//	negNode(nodeId).reset(new Node(nodeId, Node::Polarity::Negative));
-//	// create the positive node
-//	posNode(nodeId).reset(new Node(nodeId, Node::Polarity::Positive));
-//
-//	// add link between the negative to the positive node with flow = 1
-//	negNode(nodeId)->addOutLink(posNode(nodeId).get(), 1);
-//
-//	// add link between from the positive to the negative with flow = 0
-//	// this is advantageous when implementing the connectivity algorithm
-//	posNode(nodeId)->addOutLink(negNode(nodeId).get(), 0);
-//
-//	nodeCount += 2;
-//}
-

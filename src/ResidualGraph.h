@@ -28,10 +28,9 @@ namespace Network {
 
         ResidualGraph(const Graph& graph);
 
-        void print();
-
-    private:
         bool getPath(Node::ID srcNetid, Node::ID destNetid, Path &path);
+
+        void print();
 
     };
 
