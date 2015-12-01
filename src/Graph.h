@@ -13,6 +13,7 @@
 #include "NetworkIdGenerator.h"
 #include "ResidualGraph.h"
 #include "Path.h"
+#include "Connectivity.h"
 
 namespace Network {
 
@@ -35,8 +36,12 @@ namespace Network {
 		inline size_t nodeCount() const { return nodes.size(); }
 		void print();
 
-		inline unsigned getConnectivity(Node::ID srcNode, Node::ID destNode) const {
+		inline Connectivity getConnectivity(Node::ID srcNode, Node::ID destNode) const {
 			return getConnectivityByNetid(idGenerator.netid(srcNode), idGenerator.netid(destNode));
+		}
+
+		inline Connectivity getConnectivity() const {
+			return getConnectivityByNetid();
 		}
 
 		typedef std::vector<unsigned> Distribuition;
@@ -44,7 +49,9 @@ namespace Network {
 		Distribuition getDistribuition() const;
 
 	private:
-		unsigned getConnectivityByNetid(Node::ID srcNetid, Node::ID destNetid) const;
+		Connectivity getConnectivityByNetid(Node::ID srcNetid, Node::ID destNetid) const;
+
+		Connectivity getConnectivityByNetid() const;
 
 	};
 

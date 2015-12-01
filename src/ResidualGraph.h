@@ -3,6 +3,7 @@
 
 #include <memory>
 #include "Subnode.h"
+#include "Connectivity.h"
 
 namespace Network {
 
@@ -28,7 +29,9 @@ namespace Network {
 
         ResidualGraph(const Graph& graph);
 
-        bool getPath(Node::ID srcNetid, Node::ID destNetid, Path &path);
+        bool getPath(Node::ID srcNetid, Node::ID destNetid, Path &path, std::vector<bool>& visited);
+
+        void getDisconnectedNodes(const std::vector<bool>& visited, Connectivity& connectivity);
 
         void print();
 

@@ -49,29 +49,53 @@ namespace Network {
 		}
 	}
 
-	unsigned int Graph::getConnectivityByNetid(Node::ID srcNetid, Node::ID destNetid) const {
+	Connectivity Graph::getConnectivityByNetid(Node::ID srcNetid, Node::ID destNetid) const {
 
 		// check if the source and the destination are directly connected
 		for(auto& link : nodes[srcNetid]->getOutLinks()) {
 			if(destNetid == link.getOutNode()->getNetid()) {
-				return Link::FLOW_INFINITY;
+				return Connectivity();
 			}
 		}
 
 		// get the residual graph from the current graph
 		ResidualGraph residual(*this);
-		residual.print();
 
 		Link::Flow maxFlow = 0;
 		Path path(residual, residual.subnodes[posIndex(srcNetid)].get(),
 				  residual.subnodes[negIndex(destNetid)].get());
 
-		while(residual.getPath(srcNetid, destNetid, path)) {
+		// visited nodes all initialized with False.
+		std::vector<bool> visited(residual.subnodes.size(), false);
+		while(residual.getPath(srcNetid, destNetid, path, visited)) {
 			path.adjustFlows();
 			maxFlow += 1;
+
+			visited.assign(visited.size(), false);
 		}
 
-		return maxFlow;
+		Connectivity connectivity(maxFlow);
+		residual.getDisconnectedNodes(visited, connectivity);
+
+		return connectivity;
+	}
+
+	Connectivity Graph::getConnectivityByNetid() const {
+
+		Connectivity minConnectivity;
+
+		for(Node::ID u = 0; u < nodes.size(); u++) {
+			for(Node::ID v = (Node::ID) (u + 1); v < nodes.size(); v++) {
+
+				Connectivity connectivity = getConnectivityByNetid(u, v);
+
+				if(connectivity < minConnectivity) {
+					minConnectivity = connectivity;
+				}
+			}
+		}
+
+		return minConnectivity;
 	}
 
 	Graph::Distribuition Graph::getDistribuition() const {
@@ -81,13 +105,13 @@ namespace Network {
 		for(Index u = 0; u < nodes.size(); u++) {
 			for(Index v = u + 1; v < nodes.size(); v++) {
 
-				unsigned connectivity = getConnectivityByNetid(u, v);
+				Connectivity connectivity = getConnectivityByNetid(u, v);
 
-				if(connectivity == Link::FLOW_INFINITY) {
+				if(connectivity.getValue() == Link::FLOW_INFINITY) {
 					// store the infinity count in the extra spot of the connectivities
 					connectivities[nodes.size()]++;
 				} else {
-					connectivities[connectivity]++;
+					connectivities[connectivity.getValue()]++;
 				}
 
 			}
