@@ -7,9 +7,11 @@
 namespace Network {
 	enum Polarity { Negative, Positive };
 
-
+	class ResidualGraph;
 
 	class Subnode : public Node {
+
+		friend class ResidualGraph;
 
 		/// private members ///
 		Polarity polarity;
@@ -30,7 +32,9 @@ namespace Network {
 
 	protected:
 		// a node can only be created by friend classes or by subclasses
-		Subnode(ID id, ID netid, Polarity polarity) : Node(id, netid), polarity(polarity) { }
+		Subnode(ID id, ID netid, Polarity polarity)
+				: Node((ID) (polarity == Polarity::Negative ? -1 * id : id), netid)
+				, polarity(polarity) { }
 
 	};
 

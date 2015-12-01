@@ -9,7 +9,8 @@ set(SOURCE_FILES
         src/Node.h
         src/Link.h src/Link.cpp
         src/Subnode.h
-        src/NetworkIdGenerator.cpp src/NetworkIdGenerator.h)
+        src/NetworkIdGenerator.cpp src/NetworkIdGenerator.h
+        src/ResidualGraph.cpp src/ResidualGraph.h)
 
 add_executable(Network-Connectivity ${SOURCE_FILES} src/main.cpp)
 add_executable(Test ${SOURCE_FILES} tests/main.cpp )
