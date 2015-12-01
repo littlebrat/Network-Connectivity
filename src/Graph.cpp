@@ -31,9 +31,23 @@ namespace Network {
 		nodes[srcNetid]->addOutLink(nodes[destNetid].get());
 		nodes[destNetid]->addOutLink(nodes[srcNetid].get());
 	}
+
+	void Graph::print() {
+		using namespace std;
+
+		cout << "Graph" << endl;
+		for(auto& node : nodes) {
+			if(node != nullptr) {
+				cout << *node << "[ ";
+
+				for (auto& link : node->getOutLinks()) {
+					cout << link << " ";
+				}
+				cout << "]" << endl;
+			}
+		}
+	}
 }
-
-
 
 //void Network::Graph::addEdge(Network::Node::ID node1, Network::Node::ID node2) {
 //

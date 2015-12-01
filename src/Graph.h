@@ -36,14 +36,9 @@ namespace Network {
 		void addEdge(Node::ID srcNode, Node::ID destNode);
 		inline size_t nodeCount() const { return nodes.size(); }
 
-		inline void print() const {
-			return print(Graph::nodes);
-		}
+		void print();
 
 	private:
-
-		template <typename T>
-		void print(const std::vector<T>& nodes) const;
 
 		inline Node* negNode(Node::ID netid) { return nodes[2 * netid].get(); }
 		inline Node* posNode(Node::ID netid) { return nodes[2 * netid + 1].get(); }
