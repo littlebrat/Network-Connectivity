@@ -51,6 +51,13 @@ namespace Network {
 
 	unsigned int Graph::getConnectivityByNetid(Node::ID srcNetid, Node::ID destNetid) const {
 
+		// check if the source and the destination are directly connected
+		for(auto& link : nodes[srcNetid]->getOutLinks()) {
+			if(destNetid == link.getOutNode()->getNetid()) {
+				return Link::FLOW_INFINITY;
+			}
+		}
+
 		// get the residual graph from the current graph
 		ResidualGraph residual(*this);
 		residual.print();
