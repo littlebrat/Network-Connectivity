@@ -4,6 +4,7 @@
 #include "ui_mainwindow.h"
 #include "backend/Graph.h"
 #include "connectivitydialog.h"
+#include "distribuitiondialog.h"
 
 using namespace Network;
 
@@ -15,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	this->setFixedSize(490, 171);
 
 	/** DEBUG **/
-	ui->lineEdit->setText("/home/david/Development/IST/ADRC/Network-Connectivity/tests/net1.net");
+	ui->lineEdit->setText("/home/david/Development/IST/ADRC/Network-Connectivity/tests/net2.net");
 
 	// connect signals to slots
 	connect(ui->buttonLoad, SIGNAL(clicked(bool)), this, SLOT(onButtonLoadClicked()));
@@ -119,10 +120,8 @@ void MainWindow::onButtonStartClicked() {
 
 	} else if(ui->radioButtonDistribuition->isChecked()) {
 		// compute distribuition
-//		Graph::Distribuition distribuition = network->getDistribuition();
-		sleep(1);
-
-		// display the output with a distribuition widget
+		DistribuitionDialog *dialog = new DistribuitionDialog(network->getDistribuition(), this);
+		dialog->show();
 	}
 
 	ui->statusBar->showMessage("complete", 3000);
