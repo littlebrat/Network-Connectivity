@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->buttonLoad, SIGNAL(clicked(bool)), this, SLOT(onButtonLoadClicked()));
 	connect(ui->radioButtonConnectivity, SIGNAL(toggled(bool)), this, SLOT(onRadioButtonConnectivityToggled(bool)));
 	connect(ui->checkBox, SIGNAL(clicked(bool)), this, SLOT(onCheckBoxClicked(bool)));
+	connect(ui->buttonStart, SIGNAL(clicked()), this, SLOT(onButtonStartClicked()));
 
 	// operations inputs are disabled until a network has been loaded
 	setOperationsInputEnabled(false);
@@ -35,16 +36,7 @@ MainWindow::~MainWindow() {
 void MainWindow::onButtonLoadClicked() {
 
 	// disable all user input while loading the network
-	ui->lineEdit->setEnabled(false);
-	ui->buttonLoad->setEnabled(false);
-	ui->radioButtonConnectivity->setEnabled(false);
-	ui->radioButtonDistribuition->setEnabled(false);
-	ui->checkBox->setEnabled(false);
-	ui->labelNode1->setEnabled(false);
-	ui->labelNode2->setEnabled(false);
-	ui->spinBoxNode1->setEnabled(false);
-	ui->spinBoxNode2->setEnabled(false);
-	ui->buttonStart->setEnabled(false);
+	setInputEnabled(false);
 
 	// notify the user that the network is being loaded
 	ui->statusBar->showMessage("loading...");
@@ -59,15 +51,21 @@ void MainWindow::onButtonLoadClicked() {
 	ui->statusBar->showMessage("Loaded network: " + ui->lineEdit->text());
 
 	// reenable user input
-	ui->lineEdit->setEnabled(true);
-	ui->buttonLoad->setEnabled(true);
-	setOperationsInputEnabled(true);
+	setInputEnabled(true);
+}
+
+void MainWindow::setInputEnabled(bool enabled) {
+
+	ui->label->setEnabled(enabled);
+	ui->buttonLoad->setEnabled(enabled);
+	setOperationsInputEnabled(enabled);
 }
 
 void MainWindow::setOperationsInputEnabled(bool enabled) {
 	ui->radioButtonConnectivity->setEnabled(enabled);
 	ui->radioButtonDistribuition->setEnabled(enabled);
 	setConnectivityInputEnabled(enabled);
+	ui->buttonStart->setEnabled(enabled);
 }
 
 void MainWindow::setConnectivityInputEnabled(bool enabled) {
@@ -78,7 +76,6 @@ void MainWindow::setConnectivityInputEnabled(bool enabled) {
 
 	ui->checkBox->setEnabled(enabled);
 	setNodeInputEnabled(enabled);
-	ui->buttonStart->setEnabled(enabled);
 }
 
 void MainWindow::setNodeInputEnabled(bool enabled) {
@@ -99,4 +96,36 @@ void MainWindow::onCheckBoxClicked(bool checked) {
 	ui->spinBoxNode1->setEnabled(enabled);
 	ui->labelNode2->setEnabled(enabled);
 	ui->spinBoxNode2->setEnabled(enabled);
+}
+
+void MainWindow::onButtonStartClicked() {
+
+	setInputEnabled(false);
+	// notify the user that it is processing
+	ui->statusBar->showMessage("processing...");
+
+	if(ui->radioButtonConnectivity->isChecked()) {
+		// compute a connectivity
+		Connectivity connectivity;
+		if(ui->checkBox->isChecked()) {
+//			connectivity = network->getConnectivity();
+			sleep(1);
+		} else {
+//			connectivity = network->getConnectivity(ui->spinBoxNode1->value(), ui->spinBoxNode2->value());
+			sleep(1);
+		}
+
+		// display the output with a connectivity widget
+
+	} else if(ui->radioButtonDistribuition->isChecked()) {
+		// compute distribuition
+//		Graph::Distribuition distribuition = network->getDistribuition();
+		sleep(1);
+
+		// display the output with a distribuition widget
+	}
+
+	ui->statusBar->showMessage("complete", 5000);
+
+	setInputEnabled(true);
 }
