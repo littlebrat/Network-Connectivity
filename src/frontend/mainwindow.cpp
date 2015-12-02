@@ -3,6 +3,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "backend/Graph.h"
+#include "connectivitydialog.h"
 
 using namespace Network;
 
@@ -12,6 +13,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	ui->setupUi(this);
 	this->setFixedSize(490, 171);
+
+	/** DEBUG **/
+	ui->lineEdit->setText("/home/david/Development/IST/ADRC/Network-Connectivity/tests/net1.net");
 
 	// connect signals to slots
 	connect(ui->buttonLoad, SIGNAL(clicked(bool)), this, SLOT(onButtonLoadClicked()));
@@ -41,12 +45,8 @@ void MainWindow::onButtonLoadClicked() {
 	// notify the user that the network is being loaded
 	ui->statusBar->showMessage("loading...");
 
-	// to test only the ui functionality for now will use the graph default constructor
-	// but this must be replaced by the file name constructor
-//	this->network = new Graph(ui->lineEdit->text());
-	this->network = new Graph();
-
-	sleep(1);
+	// build the network from the filename that the user indicated in the line edit
+	this->network = new Graph(ui->lineEdit->text().toStdString());
 
 	ui->statusBar->showMessage("Loaded network: " + ui->lineEdit->text());
 
@@ -108,14 +108,14 @@ void MainWindow::onButtonStartClicked() {
 		// compute a connectivity
 		Connectivity connectivity;
 		if(ui->checkBox->isChecked()) {
-//			connectivity = network->getConnectivity();
-			sleep(1);
+			connectivity = network->getConnectivity();
 		} else {
-//			connectivity = network->getConnectivity(ui->spinBoxNode1->value(), ui->spinBoxNode2->value());
-			sleep(1);
+			connectivity = network->getConnectivity(ui->spinBoxNode1->value(), ui->spinBoxNode2->value());
 		}
 
-		// display the output with a connectivity widget
+		// display the output with a connectivity dialog
+		ConnectivityDialog *dialog = new ConnectivityDialog(connectivity, this);
+		dialog->show();
 
 	} else if(ui->radioButtonDistribuition->isChecked()) {
 		// compute distribuition
@@ -125,7 +125,7 @@ void MainWindow::onButtonStartClicked() {
 		// display the output with a distribuition widget
 	}
 
-	ui->statusBar->showMessage("complete", 5000);
+	ui->statusBar->showMessage("complete", 3000);
 
 	setInputEnabled(true);
 }
