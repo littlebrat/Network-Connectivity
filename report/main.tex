@@ -121,7 +121,9 @@ Tendo em conta que em cada iteração é executada uma BFS, que tem uma complexi
     \For{each node as $source$ in $graph$}
       \For{each node as $goal$ in $graph$ with $id(source)>id(goal)$}
           	  \State $flow := MaximumFlow(graph,source,goal)$
-              \State add 1 to all $k$ in $Distributions$ with $k \geq flow$
+          	  \If{$flow$ is not $\infty$}
+              	\State add 1 to all $k$ in $Distributions$ with $k \geq flow$
+              \EndIf
       \EndFor
     \EndFor
   	\Return $Distributions$
@@ -131,7 +133,7 @@ Tendo em conta que em cada iteração é executada uma BFS, que tem uma complexi
 
 \subsection{Complexidade Assimptótica}
 
-Este algoritmo vai correr
+No pior
 
 \section{Conectividade da Rede}
 
