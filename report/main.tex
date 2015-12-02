@@ -1,5 +1,4 @@
-\documentclass[12pt,a4paper]{scrartcl}
-
+\documentclass[12pt,a4paper]{article}
 
 \usepackage[portuguese]{babel}
 \usepackage[utf8]{inputenc}
@@ -45,15 +44,11 @@ A conectividade da rede é um parâmetro global desta e por isso, pode ser descr
 
 \section{Número de nós que separa um nó fonte de um nó destino}
 
-\subsection{Descrição}
 O problema de encontrar o menor número de nós que se tem de remover para separar a fonte do destino é equivalente a encontrar o número de caminhos disjuntos na rede entre este par.
 
 Este problema pode então ser modulado como um problema de fluxos máximos, fazendo \textit{vertex-splitting} e atribuíndo à ligação interna do super-nó uma capacidade unitária. A todas as outras ligações da rede foi atribuída uma capacidade igual a infinito, apesar da estratégia também ser válida para uma capacidade unitária dessas mesmas ligações.
 
 Para resolver o problema do fluxo máximo da rede foi utilizado o algoritmo de Edmonds-Karp, uma possível implementação do algoritmo de Ford-Fulkerson que utiliza uma BFS para encontrar primeiro os caminhos mais curtos em número de ligações da rede.
-
-
-\subsection{Algoritmo}
 
 \begin{algorithm}
 \caption{Algoritmo BFS que procura um caminho entre o nó fonte \textit{s} e o destino \textit{t}.}\label{alg:bfs_goal}
@@ -102,16 +97,12 @@ Para resolver o problema do fluxo máximo da rede foi utilizado o algoritmo de E
 \end{algorithmic}
 \end{algorithm}
 
-\subsection{Complexidade Assimptótica}
-
 Para um grafo com n vértices e m arestas, podem existir m caminhos disjuntos do nó fonte para o nó terminal, sendo que no pior caso o algoritmo Edmonds-Karp vai percorrer m vezes o ciclo principal.
 Tendo em conta que em cada iteração é executada uma BFS, que tem uma complexidade assimptótica de $O(n+m)$, o algoritmo no seu todo vai ter complexidade assimptótica de $O(m n^2)$.
 
 \section{Distribuição cumulativa do número de nós que separam um nó fonte de um nó destino}
 
-\subsection{Descrição}
-
-\subsection{Algoritmo}
+Para resolver este problema, foi executado o algoritmo $MaximumFlow$ para todos os pares de nós diferentes existentes no grafo, com a seguinte regra: se para separar o par (\textit{s}, \textit{t}) é preciso remover \textit{k} nós, então também é preciso remover a mesma quantidade de nós para o par (\textit{t}, \textit{s}), pois o grafo não é direcionado. Assim, não é preciso determinar \textit{k} para uma permutação de um par já visitado.
 
 \begin{algorithm}
 \caption{Procedimento para calcular a distribuição cumulativa do menor número de nós que é necessário quebrar para separar um nó fonte de um nó destino}\label{alg:distribution}
@@ -131,16 +122,10 @@ Tendo em conta que em cada iteração é executada uma BFS, que tem uma complexi
 \end{algorithmic}
 \end{algorithm}
 
-\subsection{Complexidade Assimptótica}
-
-No pior
+O algoritmo $getDistribution$ chama sempre o algoritmo $MaximumFlow$ $(n-1)!$ vezes, logo a complexidade assimptótica deste algoritmo é igual a: $O(n^2 + n) * O(m n^2) = O(m n^4)$.
 
 \section{Conectividade da Rede}
 
-\subsection{Descrição}
 
-\subsection{Algoritmo}
-
-\subsection{Complexidade Assimptótica}
 
 \end{document}
