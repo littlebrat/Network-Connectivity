@@ -54,9 +54,9 @@ Este problema pode então ser modulado como um problema de fluxos máximos, faze
 \subsection{Algoritmo}
 
 \begin{algorithm}
-\caption{Algoritmo BFS adaptado que procura um caminho entre o nó fonte \textit{s} e o destino \textit{t}.}\label{alg:bfs_goal}
+\caption{Algoritmo BFS que procura um caminho entre o nó fonte \textit{s} e o destino \textit{t}.}\label{alg:bfs_goal}
 \begin{algorithmic}[1]
-\Procedure{getPath}{$graph, source$}
+\Procedure{GetPath}{$graph, source, goal$}
 	\For{each node $n$ in $graph$}
     	\State $visited[n] := False $
     	\State $parent[n] := \emptyset $
@@ -68,15 +68,33 @@ Este problema pode então ser modulado como um problema de fluxos máximos, faze
       		\Return parent 
       \EndIf
       \For{each $link$ in $links[u]$}
-        \If{$maxFlow(link) > 0$}
         	\State neighbour = link.tail
         	\If{$visited[neighbour]$ is $False$}
 				\State $parent[neighbour] := u $
             	\State {$Queue := Queue \cup \{v\}$}
             \EndIf
-        \EndIf
       \EndFor
   	\EndWhile
+  	\Return $NULL$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+\caption{Algoritmo Ford-Fulkerson que calcula o fluxo máximo da rede.}\label{alg:residual_network}
+\begin{algorithmic}[1]
+\Procedure{GetResidualNetwork}{$graph, source, goal$}
+    \State $maxflow := 0 $
+    \State $path := GetPath(graph,source,goal)$
+  	\While{$path$ is not $NULL$}
+      \For{each $link$ in $path$}
+        	\State $link.maxflow = link.maxflow - 1$
+        	\State $reverse(link).maxflow = link.maxflow + 1$
+      \EndFor
+      \State $maxflow := maxflow + 1 $
+      \State $path := GetPath(graph,source,goal)$
+  	\EndWhile
+  	\Return $maxflow$
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
