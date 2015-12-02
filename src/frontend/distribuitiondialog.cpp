@@ -11,6 +11,9 @@ DistribuitionDialog::DistribuitionDialog(const Network::Graph::Distribuition& di
 	QCPBars *barsPlot = new QCPBars(ui->plot->xAxis, ui->plot->yAxis);
 	ui->plot->addPlottable(barsPlot);
 
+	// the count of pairs of nodes that can't be disconnected is in the last item of the distribuition
+	ui->labelValue->setText(QString::number(distribuition[distribuition.size() - 1]));
+
 	// the X axis will represent the connectivities
 	QVector<double> connectivities;
 	// the Y axis will represent the counts of each connectivity
@@ -53,6 +56,8 @@ DistribuitionDialog::DistribuitionDialog(const Network::Graph::Distribuition& di
 
 	barsPlot->setData(connectivities, connectivityCounts);
 	ui->plot->replot();
+
+//	this->adjustSize();
 }
 
 DistribuitionDialog::~DistribuitionDialog()
