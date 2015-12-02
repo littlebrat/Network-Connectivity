@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	// connect signals to slots
 	connect(ui->buttonLoad, SIGNAL(clicked(bool)), this, SLOT(onButtonLoadClicked()));
+	connect(ui->radioButtonConnectivity, SIGNAL(toggled(bool)), this, SLOT(onRadioButtonConnectivityToggled(bool)));
 
 	// operations inputs are disabled until a network has been loaded
 	setOperationsInputEnabled(false);
@@ -82,5 +83,6 @@ void MainWindow::setConnectivityInputEnabled(bool enabled) {
 	ui->buttonStart->setEnabled(enabled);
 }
 
-
-
+void MainWindow::onRadioButtonConnectivityToggled(bool checked) {
+	setConnectivityInputEnabled(checked);
+}

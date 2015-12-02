@@ -21,6 +21,8 @@ public:
 private slots:
 	void onButtonLoadClicked();
 
+	void onRadioButtonConnectivityToggled(bool checked);
+
 private:
 	Ui::MainWindow *ui;
 	Network::Graph* network; // loaded network
