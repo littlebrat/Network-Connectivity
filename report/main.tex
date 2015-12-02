@@ -56,6 +56,7 @@ Para resolver o problema do fluxo máximo da rede foi utilizado o algoritmo de E
 \Procedure{GetPath}{$graph, source, goal$}
 	\For{each node $n$ in $graph$}
     	\State {mark all nodes in $graph$ as not $visited$}
+    	\State {mark all nodes' $parent$ as $None$}
     	\State $parent[n] := \emptyset $
     \EndFor
     \State $Queue :=  \{destination\}$
