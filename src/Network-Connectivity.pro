@@ -20,7 +20,8 @@ SOURCES += frontend/main.cpp\
     backend/Link.cpp \
     backend/NetworkIdGenerator.cpp \
     backend/Path.cpp \
-    backend/ResidualGraph.cpp
+    backend/ResidualGraph.cpp \
+    frontend/connectivitydialog.cpp
 
 HEADERS  += frontend/mainwindow.h \
     backend/Connectivity.h \
@@ -30,6 +31,8 @@ HEADERS  += frontend/mainwindow.h \
     backend/Node.h \
     backend/Path.h \
     backend/ResidualGraph.h \
-    backend/Subnode.h
+    backend/Subnode.h \
+    frontend/connectivitydialog.h
 
-FORMS    += frontend/mainwindow.ui
+FORMS    += frontend/mainwindow.ui \
+    frontend/connectivitydialog.ui
