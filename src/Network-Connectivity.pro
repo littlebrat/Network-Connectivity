@@ -7,7 +7,7 @@
 QT       += core gui
 CONFIG += c++11
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
 TARGET = Network-Connectivity
 TEMPLATE = app
@@ -21,7 +21,9 @@ SOURCES += frontend/main.cpp\
     backend/NetworkIdGenerator.cpp \
     backend/Path.cpp \
     backend/ResidualGraph.cpp \
-    frontend/connectivitydialog.cpp
+    frontend/connectivitydialog.cpp \
+    frontend/qcustomplot.cpp \
+    frontend/distribuitiondialog.cpp
 
 HEADERS  += frontend/mainwindow.h \
     backend/Connectivity.h \
@@ -32,7 +34,10 @@ HEADERS  += frontend/mainwindow.h \
     backend/Path.h \
     backend/ResidualGraph.h \
     backend/Subnode.h \
-    frontend/connectivitydialog.h
+    frontend/connectivitydialog.h \
+    frontend/qcustomplot.h \
+    frontend/distribuitiondialog.h
 
 FORMS    += frontend/mainwindow.ui \
-    frontend/connectivitydialog.ui
+    frontend/connectivitydialog.ui \
+    frontend/distribuitiondialog.ui
