@@ -50,6 +50,7 @@ Este problema pode então ser modulado como um problema de fluxos máximos, faze
 \section{Número de nós que separa um nó fonte de um nó destino}
 
 \subsection{Descrição}
+Para resolver o problema em estudo foi utilizado o algoritmo de Edmonds-Karp, uma possível implementação do algoritmo de Ford-Fulkerson que utiliza uma BFS para encontrar primeiro os caminhos mais curtos em número de ligações da rede.
 
 \subsection{Algoritmo}
 
@@ -58,19 +59,20 @@ Este problema pode então ser modulado como um problema de fluxos máximos, faze
 \begin{algorithmic}[1]
 \Procedure{GetPath}{$graph, source, goal$}
 	\For{each node $n$ in $graph$}
-    	\State $visited[n] := False $
+    	\State {mark all nodes in $graph$ as not $visited$}
     	\State $parent[n] := \emptyset $
     \EndFor
     \State $Queue :=  \{destination\}$
-  	\While{$Queue$ is not $empty$}
-      \State {select first node $u$ from $queue$}
-      \If{u = goal}
+  	\While{there is a $node$ in $Queue$}
+      \State {select first node $u$ from $Queue$}
+      \If{$u$ is $goal$}
       		\Return parent 
       \EndIf
       \For{each $link$ in $links[u]$}
-        	\State neighbour = link.tail
-        	\If{$visited[neighbour]$ is $False$}
-				\State $parent[neighbour] := u $
+      		\State {select tail node $v$ from $link$}
+        	\If{$capacity(link)$ is $positive$ and $v$ not $visited$}
+        		\State {mark $v$ as $visited$}
+        		\State {mark $u$ as $parent$ of $v$}
             	\State {$Queue := Queue \cup \{v\}$}
             \EndIf
       \EndFor
@@ -81,17 +83,17 @@ Este problema pode então ser modulado como um problema de fluxos máximos, faze
 \end{algorithm}
 
 \begin{algorithm}
-\caption{Algoritmo Ford-Fulkerson que calcula o fluxo máximo da rede.}\label{alg:residual_network}
+\caption{Algoritmo Edmonds-Karp que calcula o fluxo máximo da rede.}\label{alg:residual_network}
 \begin{algorithmic}[1]
 \Procedure{GetResidualNetwork}{$graph, source, goal$}
     \State $maxflow := 0 $
     \State $path := GetPath(graph,source,goal)$
-  	\While{$path$ is not $NULL$}
+  	\While{there is a disjoint $path$ in $graph$}
       \For{each $link$ in $path$}
-        	\State $link.maxflow = link.maxflow - 1$
-        	\State $reverse(link).maxflow = link.maxflow + 1$
+      		\State subtract 1 from $link$ capacity
+        	\State add 1 to $inverted(link)$ capacity
       \EndFor
-      \State $maxflow := maxflow + 1 $
+      \State add 1 to $maxflow$
       \State $path := GetPath(graph,source,goal)$
   	\EndWhile
   	\Return $maxflow$
@@ -100,6 +102,10 @@ Este problema pode então ser modulado como um problema de fluxos máximos, faze
 \end{algorithm}
 
 \subsection{Complexidade Assimptótica}
+
+Para um grafo com n vértices e m arestas, podem existir m caminhos disjuntos do nó fonte para o nó terminal, sendo que no pior caso o algoritmo Edmonds-Karp vai percorrer m vezes o ciclo principal.
+Tendo em conta que em cada iteração é executada uma BFS, que tem uma complexidade assimptótica de $O(n^2)$, o algoritmo no seu todo vai ter complexidade assimptótica de $O(m n^2)$.
+
 
 \section{Distribuição cumulativa do número de nós que separam um nó fonte de um nó destino}
 
