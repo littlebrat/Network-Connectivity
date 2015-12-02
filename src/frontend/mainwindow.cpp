@@ -3,12 +3,13 @@
 
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
-	ui(new Ui::MainWindow)
-{
+	ui(new Ui::MainWindow) {
+
 	ui->setupUi(this);
+
+	this->setFixedSize(490, 171);
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow() {
 	delete ui;
 }
