@@ -16,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	// connect signals to slots
 	connect(ui->buttonLoad, SIGNAL(clicked(bool)), this, SLOT(onButtonLoadClicked()));
 	connect(ui->radioButtonConnectivity, SIGNAL(toggled(bool)), this, SLOT(onRadioButtonConnectivityToggled(bool)));
+	connect(ui->checkBox, SIGNAL(clicked(bool)), this, SLOT(onCheckBoxClicked(bool)));
 
 	// operations inputs are disabled until a network has been loaded
 	setOperationsInputEnabled(false);
@@ -53,7 +54,7 @@ void MainWindow::onButtonLoadClicked() {
 //	this->network = new Graph(ui->lineEdit->text());
 	this->network = new Graph();
 
-	sleep(3);
+	sleep(1);
 
 	ui->statusBar->showMessage("Loaded network: " + ui->lineEdit->text());
 
@@ -85,4 +86,12 @@ void MainWindow::setConnectivityInputEnabled(bool enabled) {
 
 void MainWindow::onRadioButtonConnectivityToggled(bool checked) {
 	setConnectivityInputEnabled(checked);
+}
+
+void MainWindow::onCheckBoxClicked(bool checked) {
+
+	ui->labelNode1->setEnabled(!checked);
+	ui->spinBoxNode1->setEnabled(!checked);
+	ui->labelNode2->setEnabled(!checked);
+	ui->spinBoxNode2->setEnabled(!checked);
 }

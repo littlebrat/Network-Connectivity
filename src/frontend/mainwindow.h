@@ -20,8 +20,8 @@ public:
 
 private slots:
 	void onButtonLoadClicked();
-
 	void onRadioButtonConnectivityToggled(bool checked);
+	void onCheckBoxClicked(bool checked);
 
 private:
 	Ui::MainWindow *ui;
