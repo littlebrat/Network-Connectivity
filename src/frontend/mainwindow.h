@@ -29,6 +29,7 @@ private:
 
 	void setOperationsInputEnabled(bool enabled);
 	void setConnectivityInputEnabled(bool enabled);
+	void setNodeInputEnabled(bool enabled);
 };
 
 #endif // MAINWINDOW_H

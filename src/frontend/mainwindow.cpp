@@ -77,11 +77,16 @@ void MainWindow::setConnectivityInputEnabled(bool enabled) {
 			ui->radioButtonConnectivity->isChecked();
 
 	ui->checkBox->setEnabled(enabled);
-	ui->labelNode1->setEnabled(enabled);
-	ui->labelNode2->setEnabled(enabled);
-	ui->spinBoxNode1->setEnabled(enabled);
-	ui->spinBoxNode2->setEnabled(enabled);
+	setNodeInputEnabled(enabled);
 	ui->buttonStart->setEnabled(enabled);
+}
+
+void MainWindow::setNodeInputEnabled(bool enabled) {
+	enabled = enabled && ui->checkBox->isEnabled() && !ui->checkBox->isChecked();
+	ui->labelNode1->setEnabled(enabled);
+	ui->spinBoxNode1->setEnabled(enabled);
+	ui->labelNode2->setEnabled(enabled);
+	ui->spinBoxNode2->setEnabled(enabled);
 }
 
 void MainWindow::onRadioButtonConnectivityToggled(bool checked) {
@@ -89,9 +94,9 @@ void MainWindow::onRadioButtonConnectivityToggled(bool checked) {
 }
 
 void MainWindow::onCheckBoxClicked(bool checked) {
-
-	ui->labelNode1->setEnabled(!checked);
-	ui->spinBoxNode1->setEnabled(!checked);
-	ui->labelNode2->setEnabled(!checked);
-	ui->spinBoxNode2->setEnabled(!checked);
+	bool enabled = !checked;
+	ui->labelNode1->setEnabled(enabled);
+	ui->spinBoxNode1->setEnabled(enabled);
+	ui->labelNode2->setEnabled(enabled);
+	ui->spinBoxNode2->setEnabled(enabled);
 }
