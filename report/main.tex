@@ -86,7 +86,7 @@ Para resolver o problema do fluxo máximo da rede foi utilizado o algoritmo de E
 \begin{algorithm}
 \caption{Algoritmo Edmonds-Karp que calcula o fluxo máximo da rede.}\label{alg:residual_network}
 \begin{algorithmic}[1]
-\Procedure{GetResidualNetwork}{$graph, source, goal$}
+\Procedure{MaximumFlow}{$graph, source, goal$}
     \State $maxflow := 0 $
     \State $path := GetPath(graph,source,goal)$
   	\While{there is a disjoint $path$ in $graph$}
@@ -105,8 +105,7 @@ Para resolver o problema do fluxo máximo da rede foi utilizado o algoritmo de E
 \subsection{Complexidade Assimptótica}
 
 Para um grafo com n vértices e m arestas, podem existir m caminhos disjuntos do nó fonte para o nó terminal, sendo que no pior caso o algoritmo Edmonds-Karp vai percorrer m vezes o ciclo principal.
-Tendo em conta que em cada iteração é executada uma BFS, que tem uma complexidade assimptótica de $O(n^2)$, o algoritmo no seu todo vai ter complexidade assimptótica de $O(m n^2)$.
-
+Tendo em conta que em cada iteração é executada uma BFS, que tem uma complexidade assimptótica de $O(n+m)$, o algoritmo no seu todo vai ter complexidade assimptótica de $O(m n^2)$.
 
 \section{Distribuição cumulativa do número de nós que separam um nó fonte de um nó destino}
 
@@ -114,7 +113,25 @@ Tendo em conta que em cada iteração é executada uma BFS, que tem uma complexi
 
 \subsection{Algoritmo}
 
+\begin{algorithm}
+\caption{Procedimento para calcular a distribuição cumulativa do menor número de nós que é necessário quebrar para separar um nó fonte de um nó destino}\label{alg:distribution}
+\begin{algorithmic}[1]
+\Procedure{getDistribution}{$graph$}
+	\State Initiate array $Distributions$ with length: $nodes - 2$
+    \For{each node as $source$ in $graph$}
+      \For{each node as $goal$ in $graph$ with $id(source)>id(goal)$}
+          	  \State $flow := MaximumFlow(graph,source,goal)$
+              \State add 1 to all $k$ in $Distributions$ with $k \geq flow$
+      \EndFor
+    \EndFor
+  	\Return $Distributions$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
 \subsection{Complexidade Assimptótica}
+
+Este algoritmo vai correr
 
 \section{Conectividade da Rede}
 
