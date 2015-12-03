@@ -127,6 +127,10 @@ O algoritmo $getDistribution$ chama sempre o algoritmo $MaximumFlow$ $(n-1)!$ ve
 
 \section{Conectividade da Rede}
 
+Para determinar a conectividade da rede é chamada uma adaptação do algoritmo $getDistribution$ em que se vai guardando a rede residual do par $(s,t)$ que possui o menor fluxo máximo da rede, ou seja, o par $(s,t)$ que se necessita de retirar menos ligações para a rede deixar de ser conexa.
+É utilizada uma BFS adicional neste rede em que são guardados os nós que não têm mais vizinhos e que correspondem aos nós de entrada resultantes do \textit{vertex-splitting}. Estes nós \textit{perderam}  a sua ligação ao nó de saída do super-nó na rede residual. Todos estes nós pertencem ao corte mínimo da rede original e por isso são estes os nós que têm de ser removidos.
+
+
 
 
 \end{document}
