@@ -59,15 +59,14 @@ Embora o problema possa ser resolvido com ligações todas de capacidade unitár
 	\For{each node $n$ in $graph$}
     	\State {mark all nodes in $graph$ as not $visited$}
     	\State {mark all nodes' $parent$ as $None$}
-    	\State $parent[n] := \emptyset $
     \EndFor
-    \State $Queue :=  \{destination\}$
+    \State $Queue :=  \{source\}$
   	\While{there is a $node$ in $Queue$}
       \State {select first node $u$ from $Queue$}
       \If{$u$ is $goal$}
       		\Return parent 
       \EndIf
-      \For{each $link$ in $links[u]$}
+      \For{each $link$ in $Links(u)$}
       		\State {select tail node $v$ from $link$}
         	\If{$capacity(link)$ is $positive$ and $v$ not $visited$}
         		\State {mark $v$ as $visited$}
@@ -134,7 +133,7 @@ De forma a determinar a distribuição de conectividades é necessário contar o
 \end{algorithmic}
 \end{algorithm}
 
-O algoritmo $getDistribution$ chama sempre o algoritmo $MaximumFlow$ $(n-1)!$ vezes, logo a complexidade assimptótica deste algoritmo é igual a: $O(n^2 + n) * O(m n^2) = O(m n^4)$.
+O algoritmo $getDistribution$ chama sempre o algoritmo $MaximumFlow$ $n(n-1)/2$ vezes, logo a complexidade assimptótica deste algoritmo é igual a: $O(n^2) * O(m n^2) = O(m n^4)$.
 
 \section{Conectividade da Rede}
 
