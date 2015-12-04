@@ -20,7 +20,7 @@
 	\begin{center}
 		\hfill \break
 		\hfill \break
-		\includegraphics[scale = 0.35]{Logo}~\\[1cm]
+		\includegraphics[scale = 0.35]{logo}~\\[1cm]
 		\textsc{\LARGE Instituto Superior Técnico}\\[0.25cm]
 		\textsc{\Large Mestrado Integrado em Engenharia Electrotécnica e de Computadores}\\[1.8cm]
 		\textsc{\huge Algoritmia e Desempenho Em Redes de Computadores}\\[0.25cm]
@@ -42,13 +42,15 @@ Neste relatório é descrito um procedimento para calcular o número mínimo de 
 
 A conectividade da rede é um parâmetro global desta e por isso, pode ser descrita como o mínimo número de nós removidos que separa um par fonte-destino dessa rede, no conjunto de todos os pares possíveis.
 
-\section{Número de nós que separa um nó fonte de um nó destino}
+\section{Connectividade entre um par de nós}
 
-O problema de encontrar o menor número de nós que se tem de remover para separar a fonte do destino é equivalente a encontrar o número de caminhos disjuntos na rede entre este par.
+Dada uma rede com ligações bidirecionais, o problema de encontrar o menor número de nós que separa um par de nós é equivalente a encontrar o número de caminhos disjuntos entre os mesmos. Neste caso considera-se caminhos disjuntos aqueles que não têm nenhum nó em comum exceto os nós fonte e destino.
 
-Este problema pode então ser modulado como um problema de fluxos máximos, fazendo \textit{vertex-splitting} e atribuíndo à ligação interna do super-nó uma capacidade unitária. A todas as outras ligações da rede foi atribuída uma capacidade igual a infinito, apesar da estratégia também ser válida para uma capacidade unitária dessas mesmas ligações.
+O problema de determinar o número de caminhos disjuntos, em termos de arestas, entre dois nós para um grafo com ligações direcionadas pode ser traduzido por um problema de fluxos máximos em que todas as ligações têm capacidade unitária. 
 
-Para resolver o problema do fluxo máximo da rede foi utilizado o algoritmo de Edmonds-Karp, uma possível implementação do algoritmo de Ford-Fulkerson que utiliza uma BFS para encontrar primeiro os caminhos mais curtos em número de ligações da rede.
+No caso do problema em questão, este pode ser reduzido ao mesmo problema transformando as ligações bidirecionais em duas ligações com sentidos inversos de forma a converter o grafo da rede num digrafo e aplicando a técnica de \textit{vertex-splitting} de forma a reduzir um problema de nós a um problema de ligações. Nesta técnica, cada nó é dividido em 2 sub-nós: nó negativo e nó positivo; ligados entre si, do nó negativo para o positivo, por uma ligação de capacidade unitária; todas as ligações de entrada do supernó entram apenas no nó negativo e todas as ligações de saída saem apenas do nó positivo. Este problema pode então ser modulado como um problema de fluxos máximos fazendo uso de um método bem conhecido: método de Ford-Fulkerson. O método de Ford-Fulkerson foi implementado (Algoritmo \ref{alg:residual_network} com recurso a um BFS para encontrar os caminhos entre o par de nós em cada iteração. Esta implementação é conhecida como o algoritmo de Edmonds-Karp.
+
+Embora o problema possa ser resolvido com ligações todas de capacidade unitária, considerando as capacidades das ligações entre supernós infinitas é garantido que na última iteração do algoritmo o corte encontrado se encontre na ligação entre os sub-nós dos nós que separam o par de nós em questão. Esta propriedade é utilizada mais à frente.
 
 \begin{algorithm}
 \caption{Algoritmo BFS que procura um caminho entre o nó fonte \textit{s} e o destino \textit{t}.}\label{alg:bfs_goal}
@@ -98,26 +100,35 @@ Para resolver o problema do fluxo máximo da rede foi utilizado o algoritmo de E
 \end{algorithmic}
 \end{algorithm}
 
+% rever esta parte!!!!!!!!!!!!
 Para um grafo com n vértices e m arestas, podem existir m caminhos disjuntos do nó fonte para o nó terminal, sendo que no pior caso o algoritmo Edmonds-Karp vai percorrer m vezes o ciclo principal.
 Tendo em conta que em cada iteração é executada uma BFS, que tem uma complexidade assimptótica de $O(n+m)$, o algoritmo no seu todo vai ter complexidade assimptótica de $O(m n^2)$.
 
-\section{Distribuição cumulativa do número de nós que separam um nó fonte de um nó destino}
+\section{Distribuição cumulativa das conectividades entre todos os pares de nós}
 
 Para resolver este problema, foi executado o algoritmo $MaximumFlow$ para todos os pares de nós diferentes existentes no grafo, com a seguinte regra: se para separar o par (\textit{s}, \textit{t}) é preciso remover \textit{k} nós, então também é preciso remover a mesma quantidade de nós para o par (\textit{t}, \textit{s}), pois o grafo não é direcionado. Assim, não é preciso determinar \textit{k} para uma permutação de um par já visitado.
+
+De forma a determinar a distribuição de conectividades é necessário contar o número de pares de nós com conectividade $k$ para cada conectividade calculada. Para uma rede com $n$ nós, um par de nós tem no máximo uma conectividade de $(n - 2)$. 
 
 \begin{algorithm}
 \caption{Procedimento para calcular a distribuição cumulativa do menor número de nós que é necessário quebrar para separar um nó fonte de um nó destino}\label{alg:distribution}
 \begin{algorithmic}[1]
 \Procedure{getDistribution}{$graph$}
-	\State Initiate array $Distributions$ with length: $nodes - 2$
-    \For{each node as $source$ in $graph$}
-      \For{each node as $goal$ in $graph$ with $id(source)>id(goal)$}
-          	  \State $flow := MaximumFlow(graph,source,goal)$
-          	  \If{$flow$ is not $\infty$}
-              	\State add 1 to all $k$ in $Distributions$ with $k \geq flow$
-              \EndIf
-      \EndFor
+    \For{each connectivity $c$ in $range(0, nodeCount - 1)$}
+    		\State $count[c] := 0$
     \EndFor
+    
+    \State $none := 0$ \Comment count of nodes that can't be disconnected
+		
+    \For{each pair of nodes uv}
+    		\State $flow := MaximumFlow(graph, uv)$
+    		\If{$flow$ is not $\infty$}
+			\State $count[c] := count[c] + 1$
+		\Else
+			\State $none := none + 1$
+		\EndIf
+    \EndFor
+    	
   	\Return $Distributions$
 \EndProcedure
 \end{algorithmic}
@@ -127,10 +138,9 @@ O algoritmo $getDistribution$ chama sempre o algoritmo $MaximumFlow$ $(n-1)!$ ve
 
 \section{Conectividade da Rede}
 
-Para determinar a conectividade da rede é chamada uma adaptação do algoritmo $getDistribution$ em que se vai guardando a rede residual do par $(s,t)$ que possui o menor fluxo máximo da rede, ou seja, o par $(s,t)$ que se necessita de retirar menos ligações para a rede deixar de ser conexa.
-É utilizada uma BFS adicional neste rede em que são guardados os nós que não têm mais vizinhos e que correspondem aos nós de entrada resultantes do \textit{vertex-splitting}. Estes nós \textit{perderam}  a sua ligação ao nó de saída do super-nó na rede residual. Todos estes nós pertencem ao corte mínimo da rede original e por isso são estes os nós que têm de ser removidos.
+Para determinar a conectividade da rede basta calcular a conectividade para todos os pares de nós, como se fez no caso da distribuição cumulativa, e determinar o(s) par(es) de nós com conectividade mais baixa (mínima).
 
-
+Na última iteração do algoritmo da conectividade, para o par de nós com conectividade mais baixa, não é encontrado nenhum caminho da fonte para o destino, contudo o conjunto dos nós visitados durante a execução da BFS nessa iteração determina conjunto de nós que fazem parte do corte mínimo da rede. Uma vez que as ligação entre os dois sub-nós têm capacidade unitária e as ligações entre supernós capacidade infinita, o corte a travessa sempre a ligação entre sub-nós. Sendo assim, para determinar o conjunto de nós que separa a rede, basta procurar na lista de nós visitados que resulta dessa última iteração, os sub-nós negativos para os quais o respetivo sub-nó positivo não foi visitado (não se encontra no corte). O supernó respetivo é um nó que separa a rede.
 
 
 \end{document}
