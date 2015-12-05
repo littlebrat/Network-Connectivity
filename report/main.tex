@@ -99,9 +99,7 @@ Embora o problema possa ser resolvido com ligações todas de capacidade unitár
 \end{algorithmic}
 \end{algorithm}
 
-% rever esta parte!!!!!!!!!!!!
-Para um grafo com n vértices e m arestas, podem existir m caminhos disjuntos do nó fonte para o nó terminal, sendo que no pior caso o algoritmo Edmonds-Karp vai percorrer m vezes o ciclo principal.
-Tendo em conta que em cada iteração é executada uma BFS, que tem uma complexidade assimptótica de $O(n+m)$, o algoritmo no seu todo vai ter complexidade assimptótica de $O(m n^2)$.
+Para um grafo com n nós e m ligações, em cada iteração é calculado um caminho aumentativo através de uma BFS com complexidade de $O(m)$ e pelo menos uma das $m$ ligações ao longo desse caminho fica saturada. Dado que os caminhos encontrados por uma BFS são de comprimento crescente em relação ao nó fonte, a distância da ligação saturada a esse mesmo nó é sempre superior à distância que esta tinha anteriormente. A distância de uma ligação ao nó fonte é limitada pelo número de nós $n$. Sendo assim, o algoritmo tem no máximo $nm$ iterações, no caso em que todas ligações são saturadas até ao seu valor máximo. Isto significa que a complexidade do algoritmo é de $O(nm^2)$.
 
 \section{Distribuição cumulativa das conectividades entre todos os pares de nós}
 
@@ -133,7 +131,7 @@ De forma a determinar a distribuição de conectividades é necessário contar o
 \end{algorithmic}
 \end{algorithm}
 
-O algoritmo $getDistribution$ chama sempre o algoritmo $MaximumFlow$ $n(n-1)/2$ vezes, logo a complexidade assimptótica deste algoritmo é igual a: $O(n^2) * O(m n^2) = O(m n^4)$.
+A operação $getDistribution$ executa o algoritmo $MaximumFlow$ $n(n-1)/2$ vezes, logo a sua complexidade assimptótica é igual a: $O(n^2) * O(n m^2) = O(m^2 n^3)$.
 
 \section{Conectividade da Rede}
 
@@ -141,7 +139,7 @@ Para determinar a conectividade da rede basta calcular a conectividade para todo
 
 Na última iteração do algoritmo da conectividade, para o par de nós com conectividade mais baixa, não é encontrado nenhum caminho da fonte para o destino, contudo o conjunto dos nós visitados durante a execução da BFS nessa iteração determina conjunto de nós que fazem parte do corte mínimo da rede. Uma vez que as ligação entre os dois sub-nós têm capacidade unitária e as ligações entre supernós capacidade infinita, o corte a travessa sempre a ligação entre sub-nós. Sendo assim, para determinar o conjunto de nós que separa a rede, basta procurar na lista de nós visitados que resulta dessa última iteração, os sub-nós negativos para os quais o respetivo sub-nó positivo não foi visitado (não se encontra no corte). O supernó respetivo é um nó que separa a rede.
 
-A complexidade assimptótica deste algoritmo é a mesma do anterior já que é chamada apenas uma BFS a mais em relação ao algoritmo $getDistribution$.
+A complexidade assimptótica desta operação é a mesma da anterior uma vez que é calculada a connectividade para cada par de nós.
 
 
 \end{document}
